@@ -7,5 +7,7 @@ copy this repository to .config folder and make sure u installed quickshell and 
 
 and add this 2 lines to your hyprland config or rewrite it to ur WM
 
+'''nginx
 bind = SUPER, M, global, quickshell:powerMenu
 bind = SUPER, N, global, quickshell:stressMenu
+'''
