@@ -5,31 +5,22 @@ Node {
     id: node
 
     // Resources
-    property url textureData: "maps/textureData.png"
-    Texture {
-        id: _0_texture
-        generateMipmaps: true
-        mipFilter: Texture.Linear
-        source: node.textureData
-    }
     PrincipledMaterial {
-        id: material_001_material
-        objectName: "Material.001"
-	//baseColorMap: Texture { source: "Comp_texture" }
-	baseColor: "white"
-	opacityMap: Texture { source: "Comp_Alpha.png" }
-	opacityChannel: PrincipledMaterial.R
-	alphaMode: PrincipledMaterial.Blend
+        id: principledMaterial
+        metalness: 1
+        roughness: 1
+        alphaMode: PrincipledMaterial.Opaque
     }
+
     // Nodes:
     Model {
-        id: cube
-        objectName: "Cube"
+        id: cube_001
+        objectName: "Cube.001"
         position: Qt.vector3d(0, 2, 0)
-        source: "meshes/cube_001_mesh.mesh"
+        scale: Qt.vector3d(1, 1.9, 2)
+        source: "meshes/cube_002_mesh.mesh"
         materials: [
-            material_001_material
-
+            principledMaterial
         ]
     }
 

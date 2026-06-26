@@ -391,14 +391,6 @@ Item {
 
 	View3D {
 		id: viewComp
-		enabled: false
-		environment: SceneEnvironment {
-			DebugSettings {
-				id: globalDebug
-				materialOverride: DebugSettings.BaseColor
-				wireframeEnabled: true
-			}
-		}
 		anchors {
 			left: parent.left
 			top: parent.top
@@ -621,6 +613,58 @@ Item {
 				y: 190
 				color: "transparent"
 				HoverHandler { id: gpuHover; enabled: stress.smenu}
+			}
+			ShapePath {
+				startX: 290
+				startY: 300
+				fillColor: "transparent"
+				strokeColor: diskHover.hovered ? "#A855F7" : "transparent"
+				strokeWidth: 4
+				capStyle: ShapePath.RoundCap
+				Behavior on strokeColor { ColorAnimation { duration: 500; easing.type: Easing.OutCubic}}
+				PathLine { x: diskHover.hovered ? 350 : 450; 
+				y: 240
+				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+			}
+			PathLine { x: diskHover.hovered ? 350 : 450; y: 200
+			Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+		}
+			}
+			Rectangle {
+				opacity: diskHover.hovered ? 1 : 0
+				width: 150
+				height: 150
+				x: diskHover.hovered ? 300 : 400
+				y: 57
+				radius: 7
+				color: "#151B2D"
+				border.width: 5
+				border.color: "#A855F7"
+				Behavior on opacity { NumberAnimation { duration: 200}}
+				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+				Text {
+					anchors.centerIn: parent
+					text: diskInfo.text
+					color: "white"
+					font.pixelSize: 15
+					font.family: "Jetbrains Mono"
+					width: 200
+					wrapMode: Text.WordWrap
+					horizontalAlignment: Text.AlignHCenter
+				}
+				Process {
+					command: ["bash", "-c", "df -h --output=source,avail,size | awk 'NR>1 && $1 ~ /^\\/dev\\// {printf \"%s\\n%s/%s\\n\", $1, $2, $3}'"]
+					running: true
+					stdout: StdioCollector { id: diskInfo}
+				}
+			}
+			Rectangle {
+				width: 70
+				height: 80
+				x: 230
+				y: 270
+				color: "transparent"
+				HoverHandler { id: diskHover; enabled: stress.smenu}
 			}
 		}
 	}
