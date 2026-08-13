@@ -20,6 +20,7 @@ Item {
 		color: theme.fg //"#151B2D"
 		HoverHandler { id: volHover }
 		MouseArea {
+			enabled: island.mode === "hovered"
 			anchors.fill: parent
 			onWheel: (wheel) => {
 				if (wheel.angleDelta.y > 0) {

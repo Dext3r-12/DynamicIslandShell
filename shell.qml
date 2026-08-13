@@ -7,6 +7,7 @@ import qs.modules
 import qs.modules.StressMenu
 
 PanelWindow {
+	id: panelWindow
 	margins { top: 4 }
 	anchors {
 		top: true
@@ -29,6 +30,14 @@ PanelWindow {
 		onPressed: {
 			if (island.mode === "powerMenu") { island.mode = "idle" }
 			else { island.mode = "powerMenu" }
+		}
+	}
+	GlobalShortcut {
+		id: search
+		name: "Search"
+		onPressed: {
+			if (island.mode === "search") { island.mode = "idle" }
+			else { island.mode = "search" }
 		}
 	}
 	GlobalShortcut {
@@ -57,9 +66,10 @@ PanelWindow {
 				else if (island.mode === "settings") { return 160 } 
 				else if (island.mode === "wifi") { return 400 } 
 				else if (island.mode === "battery") { return 300 } 
-				else { return 33 } 
-				 }
-
+				else if (island.mode === "search") { 
+					if (searchRoot.allApps.length === 1) { return 33 }
+					else { return (33 * searchRoot.allApps.length) + 5} }
+				else { return 33 } }
 			implicitWidth: {
 				if (island.mode === "idle") { return 250 } 
 				else if (island.mode === "hovered") { return 450 } 
@@ -67,16 +77,16 @@ PanelWindow {
 				else if (island.mode === "stressMenu") { return 760 } 
 				else if (island.mode === "settings") { return 460 } 
 				else if (island.mode === "battery") { return 360 } 
+				else if (island.mode === "search") { return 300 } 
 				else { return 250 } }
 			Behavior on implicitHeight { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
 			Behavior on implicitWidth  { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
 			anchors.horizontalCenter: parent.horizontalCenter
 			anchors.top: parent.top
 
-			//opacity: 0.89
 			radius: 15
 
-			color: theme.bg // "#0A0E1A"
+			color: theme.bg
 			Clock {
 				id: clocks
 				color: "white"
@@ -93,18 +103,18 @@ PanelWindow {
 				Behavior on anchors.topMargin { NumberAnimation {duration: 80} }
 			}
 			HoverHandler { 
-					id: rootMouse
-					enabled: {
-							if (island.mode === "idle") { return true } 
-							else if (island.mode === "hovered") { return true }
-							else { return false } }
-					onHoveredChanged: {
-							if (hovered) {
-										island.mode = "hovered"
-									} else {
-										island.mode = "idle"
-											}
-							}
+				id: rootMouse
+				enabled: {
+					if (island.mode === "idle") { return true } 
+					else if (island.mode === "hovered") { return true }
+					else { return false } }
+				onHoveredChanged: {
+					if (hovered) {
+						island.mode = "hovered"
+					} else {
+						island.mode = "idle"
+					}
+				}
 			}
 
 			Loader {
@@ -138,6 +148,7 @@ PanelWindow {
 			//Battery {}
 			Hovered {}
 			Settings {}
+			Search { id: searchRoot }
 			Colors { id: theme }
 		}
 	}

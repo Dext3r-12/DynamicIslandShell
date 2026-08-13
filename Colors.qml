@@ -27,6 +27,7 @@ Item {
 				themeColors.red = lines[9]
 				themeColors.green = lines[10]
 				themeColors.blue = lines[12]
+				console.log(lines[7])
 			}
 		}
 	}
