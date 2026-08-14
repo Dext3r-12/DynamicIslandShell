@@ -16,126 +16,67 @@ Item {
 			bottomMargin: 10
 		}
 		spacing: 2
-		Rectangle {
-			width: 50
-			height: width
-			radius: h1.hovered ? 10 : 5
-			color: h1.hovered ? theme.primary : theme.fg
-			Behavior on radius { NumberAnimation { duration: 400; easing.type: Easing.OutCubic} }
-			Text {
-				anchors.centerIn: parent
-				text: ""
-				font.pixelSize: h1.hovered ? 38 : 24
-				color: h1.hovered ? "#0A0E1A" : "white"
+		Repeater {
+			model: 5
+			Rectangle {
+				width: 50
+				height: width
+				radius: 5
+				color: rowHover.hovered ? theme.primary : theme.fg
+				HoverHandler { id: rowHover }
 				Behavior on color { ColorAnimation { duration: 200 }}
-				Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
+				Text {
+					anchors.centerIn: parent
+					text: {
+						if (index === 0 ) { return "" }
+						if (index === 1 ) { return "" }
+						if (index === 2 ) { return "󰍃" }
+						if (index === 3 ) { return "" }
+						if (index === 4 ) { return "󰃉" } }
+					font.pixelSize: {
+						if (index === 1 ) { return 32 }
+						else { return 24 }
+					}
+					color: rowHover.hovered ? "#0A0E1A" : "white"
+					Behavior on color { ColorAnimation { duration: 200 }}
+					Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
+				}
+				TapHandler { 
+					enabled: island.mode === "powerMenu"
+					onTapped: { 
+						if (index === 0 ) { shutdownCommand.running = true }
+						if (index === 1 ) { rebootCommand.running = true }
+						if (index === 2 ) { logoutCommand.running = true }
+						if (index === 3 ) { return 0 }
+						if (index === 4 ) {epickerCommand.running = true } 
+					}
+				}
 			}
-			HoverHandler { id: h1 }
-			TapHandler { onTapped: { shutdownCommand.running = true } enabled: island.mode === "powerMenu" ? true : false }
-
-
-			Behavior on color { ColorAnimation { duration: 200 }}
-		}
-		Process {
-			id: shutdownCommand
-			command: ["poweroff"]
-			running: false
-		}
-		Rectangle {
-			width: 50
-			height: width
-			radius: h2.hovered ? 10 : 5
-			color: h2.hovered ? theme.primary : theme.fg
-			Behavior on radius { NumberAnimation { duration: 400; easing.type: Easing.OutCubic} }
-			Text {
-				anchors.centerIn: parent
-				text: "󰜉"
-				font.pixelSize: h2.hovered ? 38 : 24
-				color: h2.hovered ? "#0A0E1A" : "white"
-				Behavior on color { ColorAnimation { duration: 200 }}
-				Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
-			}
-			HoverHandler { id: h2 }
-			TapHandler { onTapped: { rebootCommand.running = true } enabled: island.mode === "powerMenu" ? true : false }
-			Behavior on color { ColorAnimation { duration: 200 }}
-		}
-		Process {
-			id: rebootCommand
-			command: ["reboot"]
-			running: false
-		}
-		Rectangle {
-			width: 50
-			height: width
-			radius: h3.hovered ? 10 : 5
-			color: h3.hovered ? theme.primary : theme.fg
-			Behavior on radius { NumberAnimation { duration: 400; easing.type: Easing.OutCubic} }
-			Text {
-				anchors.centerIn: parent
-				text: "󰍃"
-				font.pixelSize: h3.hovered ? 38 : 24
-				color: h3.hovered ? "#0A0E1A" : "white"
-				Behavior on color { ColorAnimation { duration: 200 }}
-				Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
-			}
-			HoverHandler { id: h3 }
-
-			TapHandler { onTapped: { logoutCommand.running = true } enabled: island.mode === "powerMenu" ? true : false }
-			Behavior on color { ColorAnimation { duration: 400 }}
-		}
-		Process {
-			id: logoutCommand
-			command: ["sh", "-c", "hyprctl dispatch 'hl.dsp.exit()'"]
-			running: false
-		}
-		Rectangle {
-			width: 50
-			height: width
-			radius: h4.hovered ? 10 : 5
-			color: h4.hovered ? theme.primary : theme.fg
-			Behavior on radius { NumberAnimation { duration: 400; easing.type: Easing.OutCubic} }
-			Text {
-				anchors.centerIn: parent
-				text: ""
-				font.pixelSize: h4.hovered ? 38 : 24
-				color: h4.hovered ? "#0A0E1A" : "white"
-				Behavior on color { ColorAnimation { duration: 200 }}
-				Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
-			}
-			HoverHandler { id: h4 }
-
-			TapHandler { onTapped: { wallpaperCommand.running = true } enabled: island.mode === "powerMenu" ? true : false }
-			Behavior on color { ColorAnimation { duration: 200 }}
-		Process {
-			id: wallpaperCommand
-			command: ["hyprctl", "dispatch", "exit"]
-			running: false
-		}
-		}
-		Rectangle {
-			width: 50
-			height: width
-			radius: h5.hovered ? 10 : 5
-			color: h5.hovered ? theme.primary : theme.fg
-			Behavior on radius { NumberAnimation { duration: 400; easing.type: Easing.OutCubic} }
-			Text {
-				anchors.centerIn: parent
-				text: "󰃉"
-				font.pixelSize: h5.hovered ? 38 : 24
-				color: h5.hovered ? "#0A0E1A" : "white"
-				Behavior on color { ColorAnimation { duration: 200 }}
-				Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
-			}
-			HoverHandler { id: h5 }
-
-			Behavior on color { ColorAnimation { duration: 200 }}
-			TapHandler { onTapped: { pickerCommand.running = true; island.mode = "idle" } enabled: island.mode === "powerMenu" ? true : false }
-		Process {
-			id: pickerCommand
-			command: ["sh", "-c", "sleep 0.4 && hyprpicker -a"]
-			running: false
-		}
 		}
 	}
-
+	Process {
+		id: shutdownCommand
+		command: ["poweroff"]
+		running: false
+	}
+	Process {
+		id: rebootCommand
+		command: ["reboot"]
+		running: false
+	}
+	Process {
+		id: logoutCommand
+		command: ["sh", "-c", "hyprctl dispatch 'hl.dsp.exit()'"]
+		running: false
+	}
+	Process {
+		id: wallpaperCommand
+		command: ["hyprctl", "dispatch", "exit"]
+		running: false
+	}
+	Process {
+		id: pickerCommand
+		command: ["sh", "-c", "sleep 0.4 && hyprpicker -a"]
+		running: false
+	}
 }

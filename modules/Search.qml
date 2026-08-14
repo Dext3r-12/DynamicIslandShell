@@ -8,6 +8,7 @@ import QtQuick.Controls
 
 
 Item {
+	enabled: island.mode === "search"
 	Rectangle {
 		id: selection
 		anchors.horizontalCenter: parent.horizontalCenter

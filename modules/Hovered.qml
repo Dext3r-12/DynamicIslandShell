@@ -85,7 +85,9 @@ Item {
 					id: workpaceHitbox 
 					onHoveredChanged: workspace.whover = hovered
 				}
-				TapHandler { onTapped: {
+				TapHandler { 
+					enabled: island.mode === "hovered"
+					onTapped: {
 					let wnum = index + 1
 					Hyprland.dispatch(`hl.dsp.focus({ workspace = "${wnum}" })`)
 				}}
