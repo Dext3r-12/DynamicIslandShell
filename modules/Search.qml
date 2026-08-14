@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Widgets
 import Quickshell.Io
 import Quickshell.Hyprland
 import QtQuick
@@ -13,8 +14,9 @@ Item {
 		width: 290
 		height: 33
 		y: 33 * selected
-		color: allApps.length === 1 ? "transparent" : theme.fg
+		color: allApps.length === 1 ? "transparent" : theme.primary
 		radius: 10
+		Behavior on y { NumberAnimation { duration: 200; easing.type: Easing.OutCubic}}
 	}
 	id: searchRoot
 	property int selected: 1
@@ -37,6 +39,8 @@ Item {
 		anchors.horizontalCenter: parent.horizontalCenter
 		anchors.top: parent.top
 		anchors.topMargin: 4
+		font.family: "Jetbrains Mono"
+		font.pixelSize: 14
 		width: 200
 		focus: true
 		placeholderText: "Search.."
@@ -45,22 +49,25 @@ Item {
 		horizontalAlignment: TextInput.AlignHCenter
 		background: Rectangle { color: "transparent" }
 		Keys.onPressed: (event) => {
-			console.log("key")
 			if (event.key === Qt.Key_Down) {
-				console.log("down")
 				if (selected >= allApps.length - 1) { return 0 }
 				else { selected += 1 }
 			}
 			else if (event.key === Qt.Key_Up) {
-				console.log("up")
 				if (selected <= 1) { return 0 }
 				else { selected -= 1 }
 			}
 			else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-				console.log("enter", allApps[selected - 1])
 				launchApp.running = false
 				launchApp.running = true
 				island.mode = "idle"
+			}
+		}
+		Timer {
+			id: focusTimer
+			interval: 200
+			onTriggered: {
+				if (!panelWindow.active) { island.mode = "idle" }
 			}
 		}
 		onActiveFocusChanged: {
@@ -89,6 +96,7 @@ Item {
 		stdout: StdioCollector {
 			onStreamFinished: {
 			var list = text.split("\n")
+			if (list.length >= 12) { list.length = 11}
 			allApps = list
 			selected = 1
 			}
@@ -106,13 +114,15 @@ Item {
 				height: 33
 				color: "transparent"
 				Text {
+					id: appText
 					text: allApps[index]
 					anchors.left: parent.left
-					//verticalAlignment: Text.AlignVCenter
 					anchors.verticalCenter: parent.verticalCenter
 					anchors.leftMargin: 15
-					font.pixelSize: 14
-					color: "white"
+					font.family: "Jetbrains Mono"
+					font.pixelSize: 16
+					color: index === selected - 1 ? "black" : "white"
+					Behavior on color { ColorAnimation { duration: 200; easing.type: Easing.OutCubic}}
 				}
 			}
 		}
