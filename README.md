@@ -3,7 +3,7 @@
 Dynamic island top bar made with Quickshell
 
 <div style="display: flex; justify-content: center;">
-  <img src="./assets/preview.gif" alt="Описание GIF" />
+  <img src="./assets/preview.gif" />
 </div>
 
 
