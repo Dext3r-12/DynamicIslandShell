@@ -10,7 +10,7 @@ Item {
 	Repeater {
 		model: 8
 		Rectangle {
-			color: playerStat.text.trim() === "Playing" ? theme.primary : theme.fg
+			color: playerStat.text.trim() === "Playing" ? colors.primary : colors.fg
 			Behavior on color { ColorAnimation { duration: 150 }}
 			anchors.centerIn: playerButton
 			width: 25
@@ -30,7 +30,7 @@ Item {
 	anchors.fill: parent
 	Rectangle {
 		id: playerButton
-		color: playerStat.text.trim() === "Playing" ? theme.primary : theme.fg
+		color: playerStat.text.trim() === "Playing" ? colors.primary : colors.fg
 		Behavior on color { ColorAnimation { duration: 150 }}
 		anchors {
 			right: parent.right
@@ -41,6 +41,7 @@ Item {
 		height: 50
 		radius: 25
 		TapHandler { 
+			enabled: island.mode === "hovered"
 			onTapped: {
 				playerToggle.running = false
 				playerToggle.running = true
@@ -51,7 +52,7 @@ Item {
 		Text {
 			anchors.centerIn: parent
 			text: playerStat.text.trim() === "Playing" ? "" : (playerStat.text.trim() === "Paused" ? "" : "󰎇")
-			color: playerStat.text.trim() === "Playing" ? "#151B2D" : (playerStat.text.trim() === "Paused" ? "white" : "white")
+			color: playerStat.text.trim() === "Playing" ? colors.bg : (playerStat.text.trim() === "Paused" ? colors.white : colors.white)
 			Behavior on color { ColorAnimation { duration: 150 }}
 			font.pixelSize: playerStat.text.trim() === "Playing" ? 30 : (playerStat.text.trim() === "Paused" ? 27 : 28)
 		}

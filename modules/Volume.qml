@@ -17,7 +17,7 @@ Item {
 		width: 55
 		height: 55
 		radius: width / 2
-		color: theme.fg //"#151B2D"
+		color: colors.fg
 		HoverHandler { id: volHover }
 		MouseArea {
 			enabled: island.mode === "hovered"

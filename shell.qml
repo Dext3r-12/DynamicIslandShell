@@ -17,11 +17,11 @@ PanelWindow {
 	implicitWidth: 760
 	implicitHeight: 430
 	GlobalShortcut {
-		id: settings
-		name: "Settings"
+		id: controlPanel
+		name: "ControlPanel"
 		onPressed: {
-			if (island.mode === "settings") { island.mode = "idle" }
-			else { island.mode = "settings" }
+			if (island.mode === "controlPanel") { island.mode = "idle" }
+			else { island.mode = "controlPanel" }
 		}
 	}
 	GlobalShortcut {
@@ -57,15 +57,15 @@ PanelWindow {
 		anchors.fill: parent
 		Rectangle {
 			id: root
-
 			implicitHeight: {
 				if (island.mode === "idle") { return 33 } 
 				else if (island.mode === "hovered") { return 85 } 
 				else if (island.mode === "powerMenu") { return 70 } 
 				else if (island.mode === "stressMenu") { return 420 } 
-				else if (island.mode === "settings") { return 160 } 
+				else if (island.mode === "controlPanel") { return 160 } 
 				else if (island.mode === "wifi") { return 400 } 
 				else if (island.mode === "battery") { return 300 } 
+				else if (island.mode === "themeSelect") { return 255 } 
 				else if (island.mode === "search") { 
 					if (searchRoot.allApps.length === 1) { return 33 }
 					else { return (33 * searchRoot.allApps.length) + 5} }
@@ -75,8 +75,9 @@ PanelWindow {
 				else if (island.mode === "hovered") { return 450 } 
 				else if (island.mode === "powerMenu") { return 400 } 
 				else if (island.mode === "stressMenu") { return 760 } 
-				else if (island.mode === "settings") { return 460 } 
+				else if (island.mode === "controlPanel") { return 400 } 
 				else if (island.mode === "battery") { return 360 } 
+				else if (island.mode === "themeSelect") { return 300 } 
 				else if (island.mode === "search") { return 300 } 
 				else { return 250 } }
 			Behavior on implicitHeight { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
@@ -86,10 +87,10 @@ PanelWindow {
 
 			radius: 15
 
-			color: theme.bg
+			color: colors.bg
 			Clock {
 				id: clocks
-				color: "white"
+				color: colors.white
 				anchors.top: parent.top
 				anchors.topMargin: island.mode === "hovered" ? 0 : 7 
 				anchors.horizontalCenter: parent.horizontalCenter
@@ -144,12 +145,19 @@ PanelWindow {
 			Behavior on opacity { NumberAnimation { duration: 250 }}
 			opacity: island.mode === "powerMenu" ? 1 : 0
 			}
-			//Wifi {}
-			//Battery {}
+			Loader {
+			anchors.fill: parent
+			active: island.mode === "themeSelect"
+			source: "modules/ThemeSelect.qml"
+			width: item ? item.implicitWidth : 0
+			height: item ? item.implicitHeight : 0
+			Behavior on opacity { NumberAnimation { duration: 250 }}
+			opacity: island.mode === "themeSelect" ? 1 : 0
+			}
 			Hovered {}
-			Settings {}
+			ControlPanel {}
 			Search { id: searchRoot }
-			Colors { id: theme }
+			Colors { id: colors }
 		}
 	}
 }

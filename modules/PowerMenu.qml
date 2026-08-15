@@ -22,7 +22,7 @@ Item {
 				width: 50
 				height: width
 				radius: 5
-				color: rowHover.hovered ? theme.primary : theme.fg
+				color: rowHover.hovered ? colors.primary : colors.fg
 				HoverHandler { id: rowHover }
 				Behavior on color { ColorAnimation { duration: 200 }}
 				Text {
@@ -37,7 +37,7 @@ Item {
 						if (index === 1 ) { return 32 }
 						else { return 24 }
 					}
-					color: rowHover.hovered ? "#0A0E1A" : "white"
+					color: rowHover.hovered ? colors.bg : colors.white
 					Behavior on color { ColorAnimation { duration: 200 }}
 					Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
 				}

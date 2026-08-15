@@ -15,7 +15,7 @@ Item {
 		width: 290
 		height: 33
 		y: 33 * selected
-		color: allApps.length === 1 ? "transparent" : theme.primary
+		color: allApps.length === 1 ? "transparent" : colors.primary
 		radius: 10
 		Behavior on y { NumberAnimation { duration: 200; easing.type: Easing.OutCubic}}
 	}
@@ -32,7 +32,7 @@ Item {
 		anchors.top: parent.top
 		anchors.topMargin: 4
 		text: ""
-		color: "white"
+		color: colors.white
 		font.pixelSize: 14
 	}
 	TextField {
@@ -46,7 +46,7 @@ Item {
 		focus: true
 		placeholderText: "Search.."
 		placeholderTextColor: "#6e6e6e"
-		color: "white"
+		color: colors.white
 		horizontalAlignment: TextInput.AlignHCenter
 		background: Rectangle { color: "transparent" }
 		Keys.onPressed: (event) => {
@@ -72,7 +72,11 @@ Item {
 			}
 		}
 		onActiveFocusChanged: {
-			if (!activeFocus) { island.mode = "idle" }
+			if (!activeFocus) { 
+				island.mode = "idle"
+				checkApps.running = false
+				checkApps.running = true
+	       	}
 			else { text = "" }
 		}
 		onTextChanged: {
@@ -122,7 +126,7 @@ Item {
 					anchors.leftMargin: 15
 					font.family: "Jetbrains Mono"
 					font.pixelSize: 16
-					color: index === selected - 1 ? "black" : "white"
+					color: index === selected - 1 ? colors.bg : colors.white
 					Behavior on color { ColorAnimation { duration: 200; easing.type: Easing.OutCubic}}
 				}
 			}

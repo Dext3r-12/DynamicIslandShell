@@ -8,7 +8,6 @@ import qs
 Item {
 	anchors.fill: parent
 	opacity: island.mode === "battery" ? 1 : 0
-	Colors { id: theme }
 	Item {
 		anchors.left: parent.left
 		anchors.leftMargin: 100
@@ -21,7 +20,7 @@ Item {
 			height: 230
 			y: -105
 			radius: 10
-			color: theme.fg
+			color: colors.fg
 			Rectangle {
 				width: 50
 				height: 20
@@ -29,7 +28,7 @@ Item {
 				anchors.bottom: parent.top
 				anchors.bottomMargin: 5
 				radius: 5
-				color: theme.fg
+				color: colors.fg
 			}
 		}
 		Rectangle { 
@@ -42,7 +41,7 @@ Item {
 			Behavior on height { NumberAnimation { duration: 350; easing.type: Easing.OutCubic } }
 			y: -105
 			radius: 10
-			color: theme.green
+			color: colors.green
 		}
 		Text {
 			anchors.centerIn: batteryBase

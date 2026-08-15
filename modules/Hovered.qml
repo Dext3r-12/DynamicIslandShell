@@ -16,6 +16,7 @@ Item {
 		} else { return 0 }
 	}
 	Behavior on opacity { NumberAnimation { duration: 100 } }
+
 	Text {
 		opacity: batteryPercent.text === "computer" ? 1 : 0
 		text: batteryPercent.text
@@ -54,6 +55,8 @@ Item {
 		command: ["sh", "-c", "~/.config/quickshell/scripts/battery"]
 		stdout: StdioCollector { id: batteryPercent }
 	}
+
+	// Workspaces
 	RowLayout {
 		anchors {
 			horizontalCenter: parent.horizontalCenter
@@ -71,13 +74,12 @@ Item {
 				width: 30
 				height: 30
 				radius: 6
-				color: theme.fg
+				color: colors.fg
 				Behavior on color { ColorAnimation { duration: 100 } }
 				Text {
 					anchors.centerIn: parent
 					text: index + 1
-					color: workspace.isActive ? "#0A0E1A" : theme.white
-					Behavior on color { ColorAnimation { duration: 100 } }
+					color: colors.primary
 					font.pixelSize: 18
 					font.family: "Jetbrains Mono"
 				}	
@@ -102,7 +104,7 @@ Item {
 		radius: 6
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: 5
-		color: theme.primary // "#A855F7"
+		color: colors.primary
 		x: {
 			if (Hyprland.focusedWorkspace?.id >= 5) {
 				return 105 + 35 * 5
@@ -114,12 +116,71 @@ Item {
 		Text {
 			anchors.centerIn: parent
 			text: Hyprland.focusedWorkspace.id
-			color: theme.bg
+			color: colors.bg
 			Behavior on color { ColorAnimation { duration: 100 } }
 			font.pixelSize: 18
 			font.family: "Jetbrains Mono"
 		}	
 	}
+
+
+	// Equalizer
+	RowLayout {
+		anchors.bottom: parent.bottom
+		anchors.bottomMargin: 10
+		anchors.right: parent.right
+		anchors.rightMargin: 90
+		rotation: 180
+		Repeater {
+			model: 3
+			Rectangle {
+				color: colors.fg
+				width: 10
+				height: (eqInfo[index + 3] / 2) + 10
+				radius: width / 2
+				Behavior on height { NumberAnimation { duration: 70 }}
+			}
+		}
+	}
+	RowLayout {
+		anchors.bottom: parent.bottom
+		anchors.bottomMargin: 10
+		anchors.left: parent.left
+		anchors.leftMargin: 90
+		rotation: 180
+		Repeater {
+			model: 3
+			Rectangle {
+				color: colors.fg
+				width: 10
+				height: (eqInfo[index] / 2) + 10
+				radius: width / 2
+				Behavior on height { NumberAnimation { duration: 70 }}
+			}
+		}
+	}
+	property var eqInfo: []
+	Process {
+		id: eqGet
+		command: ["sh", "-c", "~/.config/quickshell/scripts/eq_cli"]
+		stdout: StdioCollector {
+			onStreamFinished: {
+				console.log(eqInfo[1])
+				eqInfo = text.split("\n")
+			}
+		}
+	}
+	Timer {
+		running: island.mode === "hovered"
+		repeat: true
+		interval: 150
+		onTriggered: {
+			eqGet.running = false
+			eqGet.running = true
+		}
+	}
+
+	// Other
 	Volume {}
 	Player {}
 }

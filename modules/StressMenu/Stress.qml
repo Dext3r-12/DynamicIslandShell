@@ -9,7 +9,6 @@ import qs
 
 
 Item {
-	Colors { id: theme }
 	anchors.fill: parent
 	opacity: island.mode === "stressMenu" ? 1 : 0
 	Behavior on opacity { NumberAnimation { duration: 100 }}
@@ -59,7 +58,7 @@ Item {
 		height: 80
 		width: 260
 		radius: 10
-		color: Qt.lighter(theme.fg, 0.7)
+		color: colors.fg
 	}
 	Row {
 		spacing: 30
@@ -74,7 +73,7 @@ Item {
 			width: 60
 			height: width
 			radius: width / 2
-			color: theme.fg
+			color: colors.fg1
 			Text {
 				opacity: cpuUsageHover.hovered ? 1 : 0
 				color: "white"
@@ -134,7 +133,7 @@ Item {
 			width: 60
 			height: width
 			radius: width / 2
-			color: theme.fg
+			color: colors.fg1
 			Text {
 				opacity: gpuUsageHover.hovered ? 1 : 0
 				color: "white"
@@ -193,7 +192,7 @@ Item {
 			width: 60
 			height: width
 			radius: width / 2
-			color: theme.fg
+			color: colors.fg1
 			Text {
 				opacity: ramUsageHover.hovered ? 1 : 0
 				color: "white"
@@ -291,7 +290,7 @@ Item {
 			width: 260
 			height: 120
 			radius: 10
-			color: Qt.lighter(theme.fg, 0.7)
+			color: colors.fg
 			Text {
 				text: "CPU"
 				anchors {
@@ -299,7 +298,7 @@ Item {
 					top: parent.top
 					topMargin: 5
 				}
-				color: theme.white
+				color: colors.white
 				font.pixelSize: 44
 				font.family: "Jetbrains Mono"
 				Text {
@@ -309,7 +308,7 @@ Item {
 						topMargin: 45
 					}
 					text: "Usage"
-					color: theme.white
+					color: colors.white
 					font.pixelSize: 24
 					font.family: "Jetbrains Mono"
 				}
@@ -349,7 +348,7 @@ Item {
 			width: 260
 			height: 120
 			radius: 10
-			color: Qt.lighter(theme.fg, 0.7)
+			color: colors.fg
 			Text {
 				text: "GPU"
 				anchors {
@@ -357,7 +356,7 @@ Item {
 					top: parent.top
 					topMargin: 5
 				}
-				color: theme.white
+				color: colors.white
 				font.pixelSize: 44
 				font.family: "Jetbrains Mono"
 				Text {
@@ -367,7 +366,7 @@ Item {
 						topMargin: 45
 					}
 					text: "Usage"
-					color: theme.white
+					color: colors.white
 					font.pixelSize: 24
 					font.family: "Jetbrains Mono"
 				}
@@ -469,7 +468,7 @@ Item {
 					startX: 135
 					startY: 130
 					fillColor: "transparent"
-					strokeColor: cpuHover.hovered ? theme.primary : "transparent"
+					strokeColor: cpuHover.hovered ? colors.primary : "transparent"
 					Behavior on strokeColor { ColorAnimation { duration: 200}}
 					strokeWidth: 4
 					capStyle: ShapePath.RoundCap
@@ -489,9 +488,9 @@ Item {
 					x: cpuHover.hovered ? 300 : 400
 					y: 157
 					radius: 7
-					color: theme.fg
+					color: colors.fg
 					border.width: 5
-					border.color: theme.primary
+					border.color: colors.primary
 					Behavior on opacity { NumberAnimation { duration: 200}}
 					Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
 					Text {
@@ -519,7 +518,7 @@ Item {
 				startX: 200
 				startY: 130
 				fillColor: "transparent"
-				strokeColor: ramHover.hovered ? theme.primary : "transparent"
+				strokeColor: ramHover.hovered ? colors.primary : "transparent"
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				Behavior on strokeColor { ColorAnimation { duration: 200}}
@@ -537,9 +536,9 @@ Item {
 				height: 40
 				x: ramHover.hovered ? 300 : 400
 				y: 57
-				color: theme.fg
+				color: colors.fg
 				border.width: 5
-				border.color: theme.primary
+				border.color: colors.primary
 				radius: 7
 				Behavior on opacity { NumberAnimation { duration: 200}}
 				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
@@ -568,7 +567,7 @@ Item {
 				startX: 157
 				startY: 209
 				fillColor: "transparent"
-				strokeColor: gpuHover.hovered ? theme.primary : "transparent"
+				strokeColor: gpuHover.hovered ? colors.primary : "transparent"
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				Behavior on strokeColor { ColorAnimation { duration: 500; easing.type: Easing.OutCubic}}
@@ -587,9 +586,9 @@ Item {
 				x: gpuHover.hovered ? 300 : 400
 				y: 257
 				radius: 7
-				color: theme.fg
+				color: colors.fg
 				border.width: 5
-				border.color: theme.primary
+				border.color: colors.primary
 				Behavior on opacity { NumberAnimation { duration: 200}}
 				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
 				Text {
@@ -615,7 +614,7 @@ Item {
 				startX: 290
 				startY: 300
 				fillColor: "transparent"
-				strokeColor: diskHover.hovered ? theme.primary : "transparent"
+				strokeColor: diskHover.hovered ? colors.primary : "transparent"
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				Behavior on strokeColor { ColorAnimation { duration: 500; easing.type: Easing.OutCubic}}
@@ -634,9 +633,9 @@ Item {
 				x: diskHover.hovered ? 300 : 400
 				y: 7
 				radius: 7
-				color: theme.fg
+				color: colors.fg
 				border.width: 5
-				border.color: theme.primary
+				border.color: colors.primary
 				Behavior on opacity { NumberAnimation { duration: 200}}
 				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
 				Disks {}
