@@ -44,6 +44,7 @@ Item {
 			height: isMuted ? 40 : 0
 			radius: 5
 			anchors.centerIn: parent
+			color: colors.primary
 
 			rotation: 40
 

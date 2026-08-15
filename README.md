@@ -12,11 +12,5 @@ Dynamic island top bar made with Quickshell
 
 # Installation guide
 
-copy this repository to .config/quickshell directory and make sure you installed quickshell and QtQuick3d plugin
+idk
 
-and add these 2 lines to your hyprland config or rewrite it to your WM
-
-```nginx
-bind = SUPER, M, global, quickshell:powerMenu
-bind = SUPER, N, global, quickshell:stressMenu
-```
