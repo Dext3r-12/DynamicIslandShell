@@ -7,56 +7,94 @@ import qs.modules
 Item {
 	id: themes
 	property color bg: {
-		if (activeTheme === "catppuccin") { return catppuccin[2] }
-		if (activeTheme === "gruvbox"   ) { return gruvbox[0] }
-		if (activeTheme === "rosepine"  ) { return rosepine[0] }
-		else { return activeTheme[13]}
-	}
-	property color fg:  {
-		if (activeTheme === "catppuccin") { return catppuccin[3] }
-		if (activeTheme === "gruvbox"   ) { return gruvbox[1] }
-		if (activeTheme === "rosepine"  ) { return rosepine[1] }
-		else { return activeTheme[13]}
-	}
-	property color fg1:  {
-		if (activeTheme === "catppuccin") { return catppuccin[4] }
-		if (activeTheme === "gruvbox"   ) { return gruvbox[2] }
-		if (activeTheme === "rosepine"  ) { return rosepine[2] }
-		else { return activeTheme[13]}
-	}
-	property color primary:  {
-		if (activeTheme === "catppuccin") { return catppuccin[8] }
-		if (activeTheme === "gruvbox"   ) { return gruvbox[8] }
-		if (activeTheme === "rosepine"  ) { return rosepine[4] }
-		else { return activeTheme[13]}
-	}
-	property color white: {
-		if (activeTheme === "catppuccin") { return catppuccin[11] }
-		if (activeTheme === "gruvbox"   ) { return gruvbox[10] }
-		if (activeTheme === "rosepine"  ) { return rosepine[5] }
-		else { return activeTheme[13]}
-	}
-	property color red: {
-		if (activeTheme === "catppuccin") { return catppuccin[12] }
-		if (activeTheme === "gruvbox"   ) { return gruvbox[11] }
-		if (activeTheme === "rosepine"  ) { return rosepine[8] }
-		else { return activeTheme[13]}
-	}
-	property color green: {
-		if (activeTheme === "catppuccin") { return catppuccin[14] }
-		if (activeTheme === "gruvbox"   ) { return gruvbox[13] }
-		if (activeTheme === "rosepine"  ) { return rosepine[10] }
-		else { return activeTheme[13]}
-	}
-	property color blue: {
-		if (activeTheme === "catppuccin") { return catppuccin[13] }
-		if (activeTheme === "gruvbox"   ) { return gruvbox[12] }
-		if (activeTheme === "rosepine"  ) { return rosepine[9] }
+		if (activeTheme === "catppuccin"   ) { return catppuccin[2] }
+		if (activeTheme === "gruvbox"      ) { return gruvbox[0] }
+		if (activeTheme === "rosepine"     ) { return rosepine[0] }
+		if (activeTheme === "cherryblossom") { return cherryblossom[0] }
 		else { return activeTheme[13]}
 	} 
 
-	property string activeTheme: "gruvbox"
+	property color fg:  {
+		if (activeTheme === "catppuccin"   ) { return catppuccin[3] }
+		if (activeTheme === "gruvbox"      ) { return gruvbox[1] }
+		if (activeTheme === "rosepine"     ) { return rosepine[1] }
+		if (activeTheme === "cherryblossom") { return cherryblossom[1] }
+		else { return activeTheme[13]}
+	} 
 
+	property color fg1:  {
+		if (activeTheme === "catppuccin"   ) { return catppuccin[4] }
+		if (activeTheme === "gruvbox"      ) { return gruvbox[2] }
+		if (activeTheme === "rosepine"     ) { return rosepine[2] }
+		if (activeTheme === "cherryblossom") { return cherryblossom[2] }
+		else { return activeTheme[13]}
+	} 
+
+	property color primary:  {
+		if (activeTheme === "catppuccin"   ) { return catppuccin[8] }
+		if (activeTheme === "gruvbox"      ) { return gruvbox[8] }
+		if (activeTheme === "rosepine"     ) { return rosepine[4] }
+		if (activeTheme === "cherryblossom") { return cherryblossom[4] }
+		else { return activeTheme[13]}
+	} 
+
+	property color white: {
+		if (activeTheme === "catppuccin"   ) { return catppuccin[11] }
+		if (activeTheme === "gruvbox"      ) { return gruvbox[10] }
+		if (activeTheme === "rosepine"     ) { return rosepine[5] }
+		if (activeTheme === "cherryblossom") { return cherryblossom[5] }
+		else { return activeTheme[13]}
+	} 
+
+	property color red: {
+		if (activeTheme === "catppuccin"   ) { return catppuccin[12] }
+		if (activeTheme === "gruvbox"      ) { return gruvbox[11] }
+		if (activeTheme === "rosepine"     ) { return rosepine[8] }
+		if (activeTheme === "cherryblossom") { return cherryblossom[7] }
+		else { return activeTheme[13]}
+	} 
+
+	property color green: {
+		if (activeTheme === "catppuccin"   ) { return catppuccin[14] }
+		if (activeTheme === "gruvbox"      ) { return gruvbox[13] }
+		if (activeTheme === "rosepine"     ) { return rosepine[10] }
+		if (activeTheme === "cherryblossom") { return cherryblossom[8] }
+		else { return activeTheme[13]}
+	} 
+
+	property color blue: {
+		if (activeTheme === "catppuccin"   ) { return catppuccin[13] }
+		if (activeTheme === "gruvbox"      ) { return gruvbox[12] }
+		if (activeTheme === "rosepine"     ) { return rosepine[9] }
+		if (activeTheme === "cherryblossom") { return cherryblossom[6] }
+		else { return activeTheme[13]}
+	} 
+
+	property string activeTheme: "cherryblossom"
+
+	property var wallpaperColors: [
+	"#28242a", // Base
+	"#312c33", // Surface0
+	"#3b343d", // Surface1
+	"#463f49", // Surface2
+	"#ff8cba", // Primary
+	"#fff4f8", // Text / White
+	"#91b4d5", // Blue
+	"#e86a84", // Red
+	"#a2c49b"  // Green
+]
+
+	property var cherryblossom: [
+	"#1d1a1f", // Base
+	"#262229", // Surface0
+	"#3b343d", // Surface1
+	"#463f49", // Surface2
+	"#ff8cba", // Primary
+	"#fff4f8", // Text / White
+	"#91b4d5", // Blue
+	"#e86a84", // Red
+	"#a2c49b"  // Green
+]
 
 	property var rosepine: [
 	"#191724", // Base
@@ -120,13 +158,7 @@ Item {
 			id: colorSource 
 			onStreamFinished: {
 				var lines = colorSource.text.trim().split('\n')
-				themes.fg = Qt.lighter(lines[3], 0.25)
-				themes.primary = lines[7]
-				themes.white = lines[15]
-				themes.red = lines[9]
-				themes.green = lines[10]
-				themes.blue = lines[12]
-				console.log(lines[7])
+				wallpaperColors = lines
 			}
 		}
 	}

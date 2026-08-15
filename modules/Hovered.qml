@@ -165,7 +165,6 @@ Item {
 		command: ["sh", "-c", "~/.config/quickshell/scripts/eq_cli"]
 		stdout: StdioCollector {
 			onStreamFinished: {
-				console.log(eqInfo[1])
 				eqInfo = text.split("\n")
 			}
 		}

@@ -24,7 +24,7 @@ Item {
 					onTapped: {
 						if ( index === 0 ) { colors.activeTheme = "catppuccin"}
 						if ( index === 1 ) { colors.activeTheme = "gruvbox"}
-						if ( index === 2 ) { colors.activeTheme = "tokyoNight"}
+						if ( index === 2 ) { colors.activeTheme = "cherryblossom"}
 						if ( index === 3 ) { colors.activeTheme = "Nord"}
 						if ( index === 4 ) { colors.activeTheme = "rosepine"}
 						if ( index === 5 ) { colors.activeTheme = "catppuccin"}
@@ -35,7 +35,7 @@ Item {
 					text: {
 						if ( index === 0 ) { return "Catppuccin" }
 						if ( index === 1 ) { return "Gruvbox" }
-						if ( index === 2 ) { return "TokyoNight"}
+						if ( index === 2 ) { return "Cherry-Blossom"}
 						if ( index === 3 ) { return "Nord"}
 						if ( index === 4 ) { return "Rose-Pine"}
 						if ( index === 5 ) { return "TokyoNight"}
@@ -65,10 +65,22 @@ Item {
 										if ( index === 3 ) { return colors.gruvbox[10] }
 									}
 									else if ( themeText.text === "Catppuccin" ) { 
-										if ( index === 0 ) { return colors.catppuccin[0] }
+										if ( index === 0 ) { return colors.catppuccin[2] }
 										if ( index === 1 ) { return colors.catppuccin[5] }
 										if ( index === 2 ) { return colors.catppuccin[8] }
 										if ( index === 3 ) { return colors.catppuccin[10] }
+									}
+									else if ( themeText.text === "Rose-Pine" ) { 
+										if ( index === 0 ) { return colors.rosepine[0] }
+										if ( index === 1 ) { return colors.rosepine[1] }
+										if ( index === 2 ) { return colors.rosepine[2] }
+										if ( index === 3 ) { return colors.rosepine[4] }
+									}
+									else if ( themeText.text === "Cherry-Blossom" ) { 
+										if ( index === 0 ) { return colors.cherryblossom[0] }
+										if ( index === 1 ) { return colors.cherryblossom[1] }
+										if ( index === 2 ) { return colors.cherryblossom[2] }
+										if ( index === 3 ) { return colors.cherryblossom[4] }
 									}
 									else { return "purple" }
 								}

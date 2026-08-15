@@ -86,6 +86,7 @@ PanelWindow {
 			anchors.top: parent.top
 
 			radius: 15
+			opacity: 0.98
 
 			color: colors.bg
 			Clock {

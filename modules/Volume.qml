@@ -55,7 +55,7 @@ Item {
 			layer.samples: 6
 			ShapePath {
 				fillColor: "transparent"
-				strokeColor: "white"
+				strokeColor: colors.primary
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				PathAngleArc {
@@ -93,7 +93,7 @@ Item {
 
 	    Text {
 		id: volValue
-		color: "white"
+		color: colors.primary
 		font.pixelSize: 22
 		font.family: "Jetbrains Mono"
 		anchors {
@@ -104,7 +104,7 @@ Item {
 		Behavior on opacity { NumberAnimation { duration: 150}}
 	    }
 	    Text {
-		color: "white"
+		color: colors.primary
 		font.pixelSize: 20
 		anchors {
 		    centerIn: volBG

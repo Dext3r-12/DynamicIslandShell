@@ -2,6 +2,9 @@
 # DynamicIslandShell
 Dynamic island top bar made with Quickshell
 
+<img src="./assets/preview.gif" width="50%" />
+
+
 <img width="795" height="658" alt="preview_2" src="https://github.com/user-attachments/assets/c60d7096-cd81-4152-8b74-d89503d8b9df" />
 
 
