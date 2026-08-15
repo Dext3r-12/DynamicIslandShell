@@ -136,9 +136,9 @@ Item {
 			Rectangle {
 				color: colors.fg
 				width: 10
-				height: (eqInfo[index + 3] / 2) + 10
+				height: (eqInfo[index + 3] / 2.5) + 10
 				radius: width / 2
-				Behavior on height { NumberAnimation { duration: 70 }}
+				Behavior on height { NumberAnimation { duration: 20 }}
 			}
 		}
 	}
@@ -153,29 +153,21 @@ Item {
 			Rectangle {
 				color: colors.fg
 				width: 10
-				height: (eqInfo[index] / 2) + 10
+				height: (eqInfo[index] / 2.5) + 10
 				radius: width / 2
-				Behavior on height { NumberAnimation { duration: 70 }}
+				Behavior on height { NumberAnimation { duration: 20 }}
 			}
 		}
 	}
 	property var eqInfo: []
 	Process {
 		id: eqGet
-		command: ["sh", "-c", "~/.config/quickshell/scripts/eq_cli"]
-		stdout: StdioCollector {
-			onStreamFinished: {
-				eqInfo = text.split("\n")
-			}
-		}
-	}
-	Timer {
 		running: island.mode === "hovered"
-		repeat: true
-		interval: 150
-		onTriggered: {
-			eqGet.running = false
-			eqGet.running = true
+		command: ["sh", "-c", "~/.config/quickshell/scripts/equalizer.sh "]
+		stdout: SplitParser {
+			onRead: data => {
+				eqInfo = data.split("#")
+			}
 		}
 	}
 
