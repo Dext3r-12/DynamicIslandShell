@@ -105,7 +105,7 @@ Item {
 		Behavior on opacity { NumberAnimation { duration: 150}}
 	    }
 	    Text {
-		color: colors.primary
+		color: colors.white
 		font.pixelSize: 23
 		font.family: iconFont.name
 		anchors {
