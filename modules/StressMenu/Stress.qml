@@ -96,7 +96,7 @@ Item {
 
 			Shape {
 				anchors.centerIn: parent
-				layer.enabled: true
+				//layer.enabled: true
 				layer.samples: 6
 				ShapePath {
 					fillColor: "transparent"
@@ -104,9 +104,9 @@ Item {
 					strokeWidth: 4
 					capStyle: ShapePath.RoundCap
 					PathAngleArc {
-						centerX: 31
-						centerY: 31
-						radiusX: 27
+						centerX: 33
+						centerY: 34
+						radiusX: 30
 						radiusY: radiusX
 						startAngle: -90
 						sweepAngle: usageStats.cpuUsage * 3.6
@@ -119,8 +119,8 @@ Item {
 					capStyle: ShapePath.RoundCap
 					PathAngleArc {
 						centerX: 31
-						centerY: 31
-						radiusX: 27
+						centerY: 34
+						radiusX: 30
 						radiusY: radiusX
 						startAngle: -90
 						sweepAngle: 360
@@ -156,7 +156,7 @@ Item {
 
 			Shape {
 				anchors.centerIn: parent
-				layer.enabled: true
+				//layer.enabled: true
 				layer.samples: 6
 				ShapePath {
 					fillColor: "transparent"
@@ -166,7 +166,7 @@ Item {
 					PathAngleArc {
 						centerX: 31
 						centerY: 31
-						radiusX: 27
+						radiusX: 30
 						radiusY: radiusX
 						startAngle: -90
 						sweepAngle: usageStats.gpuUsage * 3.6
@@ -180,7 +180,7 @@ Item {
 					PathAngleArc {
 						centerX: 31
 						centerY: 31
-						radiusX: 27
+						radiusX: 30
 						radiusY: radiusX
 						startAngle: -90
 						sweepAngle: 360
@@ -215,7 +215,7 @@ Item {
 
 			Shape {
 				anchors.centerIn: parent
-				layer.enabled: true
+				//layer.enabled: true
 				layer.samples: 6
 				ShapePath {
 					fillColor: "transparent"
@@ -225,7 +225,7 @@ Item {
 					PathAngleArc {
 						centerX: 31
 						centerY: 31
-						radiusX: 27
+						radiusX: 30
 						radiusY: radiusX
 						startAngle: -90
 						sweepAngle: usageStats.ramUsage * 24
@@ -239,7 +239,7 @@ Item {
 					PathAngleArc {
 						centerX: 31
 						centerY: 31
-						radiusX: 27
+						radiusX: 30
 						radiusY: radiusX
 						startAngle: -90
 						sweepAngle: 360
