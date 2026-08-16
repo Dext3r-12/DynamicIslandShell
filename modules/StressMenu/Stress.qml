@@ -638,7 +638,7 @@ Item {
 				border.color: colors.primary
 				Behavior on opacity { NumberAnimation { duration: 200}}
 				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
-				Disks {}
+				//Disks {}
 			}
 			Rectangle {
 				width: 70

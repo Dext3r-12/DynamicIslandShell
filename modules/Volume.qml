@@ -106,14 +106,25 @@ Item {
 	    }
 	    Text {
 		color: colors.primary
-		font.pixelSize: 20
+		font.pixelSize: 23
+		font.family: iconFont.name
 		anchors {
 		    centerIn: volBG
 		}
-		text: ""
+		text: ""
 		opacity: volHover.hovered ? 0 : 1
 		Behavior on opacity { NumberAnimation { duration: 150}}
 	    }
+	    /*
+	    Image {
+		source: "../icons/headphones.png"
+		anchors.centerIn: volBG
+		fillMode: Image.PreserveAspectFit
+		width: 23
+		height: width
+		opacity: volHover.hovered ? 0 : 1
+		Behavior on opacity { NumberAnimation { duration: 150}}
+	}*/
 
 	    Process {
 		id: volReader

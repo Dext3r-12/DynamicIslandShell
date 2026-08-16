@@ -8,7 +8,6 @@ import qs.modules.StressMenu
 
 PanelWindow {
 	id: panelWindow
-	margins { top: 4 }
 	anchors {
 		top: true
 	}
@@ -16,6 +15,19 @@ PanelWindow {
 	exclusiveZone: 33
 	implicitWidth: 760
 	implicitHeight: 430
+
+
+
+
+	// Icons
+	FontLoader {
+		id: iconFont
+		source: "./assets/icons.ttf"
+	}
+
+
+
+	// Keybinds
 	GlobalShortcut {
 		id: controlPanel
 		name: "ControlPanel"
@@ -57,29 +69,39 @@ PanelWindow {
 		anchors.fill: parent
 		Rectangle {
 			id: root
+			anchors { topMargin: 4 }
 			implicitHeight: {
-				if (island.mode === "idle") { return 33 } 
-				else if (island.mode === "hovered") { return 85 } 
-				else if (island.mode === "powerMenu") { return 70 } 
-				else if (island.mode === "stressMenu") { return 420 } 
-				else if (island.mode === "controlPanel") { return 160 } 
-				else if (island.mode === "wifi") { return 400 } 
-				else if (island.mode === "battery") { return 300 } 
-				else if (island.mode === "themeSelect") { return 255 } 
-				else if (island.mode === "search") { 
-					if (searchRoot.allApps.length === 1) { return 33 }
-					else { return (33 * searchRoot.allApps.length) + 5} }
-				else { return 33 } }
+				switch (island.mode) {
+					case "idle":           return 33; break;
+					case "hovered":        return 85; break;
+					case "powerMenu":      return 70; break;
+					case "stressMenu":     return 420; break;
+					case "controlPanel":   return 160; break;
+					case "wifi":           return 400; break;
+					case "battery":        return 300; break;
+					case "themeSelect":    return 255; break;
+					case "search": 
+						if (searchRoot.allApps.length === 1) { return 33 }
+						else { return (33 * searchRoot.allApps.length) + 5} 
+
+					default:               return 33;
+				}
+			}
 			implicitWidth: {
-				if (island.mode === "idle") { return 250 } 
-				else if (island.mode === "hovered") { return 450 } 
-				else if (island.mode === "powerMenu") { return 400 } 
-				else if (island.mode === "stressMenu") { return 760 } 
-				else if (island.mode === "controlPanel") { return 400 } 
-				else if (island.mode === "battery") { return 360 } 
-				else if (island.mode === "themeSelect") { return 300 } 
-				else if (island.mode === "search") { return 300 } 
-				else { return 250 } }
+				switch (island.mode) {
+					case "idle":           return 250; break;
+					case "hovered":        return 450; break;
+					case "powerMenu":      return 400; break;
+					case "stressMenu":     return 760; break;
+					case "controlPanel":   return 400; break;
+					case "wifi":           return 400; break;
+					case "battery":        return 360; break;
+					case "themeSelect":    return 300; break;
+					case "search":         return 300; break;
+
+					default:               return 250;
+				}
+			}
 			Behavior on implicitHeight { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
 			Behavior on implicitWidth  { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
 			anchors.horizontalCenter: parent.horizontalCenter
@@ -106,10 +128,7 @@ PanelWindow {
 			}
 			HoverHandler { 
 				id: rootMouse
-				enabled: {
-					if (island.mode === "idle") { return true } 
-					else if (island.mode === "hovered") { return true }
-					else { return false } }
+				enabled: island.mode === "idle" || island.mode === "hovered"
 				onHoveredChanged: {
 					if (hovered) {
 						island.mode = "hovered"

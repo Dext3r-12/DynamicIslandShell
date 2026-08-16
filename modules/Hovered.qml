@@ -10,11 +10,7 @@ import qs
 Item {
 	id: menuHovered
 	anchors.fill: parent
-	opacity: {
-		if (island.mode === "hovered") {
-			return 1
-		} else { return 0 }
-	}
+	opacity: island.mode === "hovered"
 	Behavior on opacity { NumberAnimation { duration: 100 } }
 
 	Text {
@@ -83,10 +79,6 @@ Item {
 					font.pixelSize: 18
 					font.family: "Jetbrains Mono"
 				}	
-				HoverHandler { 
-					id: workpaceHitbox 
-					onHoveredChanged: workspace.whover = hovered
-				}
 				TapHandler { 
 					enabled: island.mode === "hovered"
 					onTapped: {

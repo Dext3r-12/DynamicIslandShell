@@ -12,9 +12,10 @@ Item {
 		Rectangle {
 			color: playerStat.text.trim() === "Playing" ? colors.primary : colors.fg
 			Behavior on color { ColorAnimation { duration: 150 }}
+			Behavior on height { NumberAnimation { duration: 20 }}
 			anchors.centerIn: playerButton
 			width: 25
-			height: 60
+			height: 60 + (menuHovered.eqInfo[index] / 6)
 			radius: width / 2
 			rotation: (index * 45)
 			RotationAnimation on rotation {

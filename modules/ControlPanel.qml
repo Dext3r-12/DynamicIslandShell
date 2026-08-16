@@ -26,25 +26,29 @@ Item {
 				width: 100
 				height: 50
 				radius: 10
-				color: colors.fg
+				color: controlPanelHoverButtons.hovered ? colors.primary : colors.fg
 				Text {
-					color: colors.white
+					color: controlPanelHoverButtons.hovered ? colors.bg : colors.white
 					text: {
-						if (index === 0) { return "" }
-						if (index === 1) { return "󰂯" }
-						if (index === 2) { return "" }
+						if (index === 0) { return "" }
+						if (index === 1) { return "" }
+						if (index === 2) { return "" }
 						if (index === 3) { return "" }
 						if (index === 4) { return "" }
-						if (index === 5) { return "" }
+						if (index === 5) { return "" }
 					}
 					anchors.centerIn: parent
 					font.pixelSize: {
-						if (index === 1 ) { return 34 }
-						if (index === 2 ) { return 30 }
-						if (index === 3 ) { return 30 }
-						else { return 24 }
+						if (index === 1 ) { return 32 }
+						if (index === 2 ) { return 34 }
+						if (index === 3 ) { return 28 }
+						else { return 28 }
 					}
+					font.family: iconFont.name
+					Behavior on color { ColorAnimation { duration: 150 }}
 				}
+				HoverHandler { id: controlPanelHoverButtons; enabled: island.mode === "controlPanel" }
+				Behavior on color { ColorAnimation { duration: 150 }}
 				TapHandler {
 					enabled: island.mode === "controlPanel"
 					onTapped: {
