@@ -18,7 +18,7 @@ Item {
 		height: 55
 		radius: width / 2
 		color: colors.fg
-		HoverHandler { id: volHover }
+		HoverHandler { id: volHover; enabled: island.mode === "hovered"}
 		MouseArea {
 			enabled: island.mode === "hovered"
 			anchors.fill: parent

@@ -11,6 +11,7 @@ Item {
 	id: menuHovered
 	anchors.fill: parent
 	opacity: island.mode === "hovered"
+	enabled: island.mode === "hovered"
 	Behavior on opacity { NumberAnimation { duration: 100 } }
 
 	Text {
@@ -128,7 +129,7 @@ Item {
 			Rectangle {
 				color: colors.fg
 				width: 10
-				height: (eqInfo[index + 3] / 2.5) + 10
+				height: (menuHovered.eqInfo[index + 3] / 2.5) + 10
 				radius: width / 2
 				Behavior on height { NumberAnimation { duration: 20 }}
 			}
@@ -145,7 +146,7 @@ Item {
 			Rectangle {
 				color: colors.fg
 				width: 10
-				height: (eqInfo[index] / 2.5) + 10
+				height: (menuHovered.eqInfo[index] / 2.5) + 10
 				radius: width / 2
 				Behavior on height { NumberAnimation { duration: 20 }}
 			}
@@ -154,7 +155,7 @@ Item {
 	property var eqInfo: []
 	Process {
 		id: eqGet
-		running: island.mode === "hovered"
+		running: island.mode === "hovered" 
 		command: ["sh", "-c", "~/.config/quickshell/scripts/equalizer.sh "]
 		stdout: SplitParser {
 			onRead: data => {
@@ -165,5 +166,5 @@ Item {
 
 	// Other
 	Volume {}
-	Player {}
+	PlayerModule {}
 }

@@ -5,12 +5,13 @@ import QtQuick.Layouts
 Item {
 	anchors.fill: parent
 	opacity: island.mode === "themeSelect" ? 1 : 0
+	enabled: island.mode === "powerMenu" ? 1 : 0
 	GridLayout {
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: 15
 		anchors.horizontalCenter: parent.horizontalCenter
-		rows: 3
-		columns: 2
+		rows: 2
+		columns: 3
 		Repeater {
 			id: themeBoxes
 			model: 6

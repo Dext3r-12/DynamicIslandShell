@@ -8,6 +8,7 @@ import QtQuick.Layouts
 Item {
 	anchors.fill: parent
 	opacity: island.mode === "powerMenu" ? 1 : 0
+	enabled: island.mode === "powerMenu" ? 1 : 0
 	Behavior on opacity { NumberAnimation { duration: 250 }}
 	RowLayout {
 		anchors {

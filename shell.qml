@@ -79,7 +79,8 @@ PanelWindow {
 					case "controlPanel":   return 160; break;
 					case "wifi":           return 400; break;
 					case "battery":        return 300; break;
-					case "themeSelect":    return 255; break;
+					case "themeSelect":    return 170; break;
+					case "player":         return 170; break;
 					case "search": 
 						if (searchRoot.allApps.length === 1) { return 33 }
 						else { return (33 * searchRoot.allApps.length) + 5} 
@@ -96,7 +97,8 @@ PanelWindow {
 					case "controlPanel":   return 400; break;
 					case "wifi":           return 400; break;
 					case "battery":        return 360; break;
-					case "themeSelect":    return 300; break;
+					case "themeSelect":    return 430; break;
+					case "player":         return 430; break;
 					case "search":         return 300; break;
 
 					default:               return 250;
@@ -128,13 +130,11 @@ PanelWindow {
 			}
 			HoverHandler { 
 				id: rootMouse
-				enabled: island.mode === "idle" || island.mode === "hovered"
+				enabled: (island.mode === "idle" || island.mode === "hovered")
 				onHoveredChanged: {
-					if (hovered) {
-						island.mode = "hovered"
-					} else {
-						island.mode = "idle"
-					}
+					if (island.mode !== "idle" && island.mode !== "hovered") return;
+
+					island.mode = hovered ? "hovered" : "idle"
 				}
 			}
 
@@ -167,6 +167,15 @@ PanelWindow {
 			}
 			Loader {
 			anchors.fill: parent
+			active: island.mode === "player"
+			source: "modules/Player.qml"
+			width: item ? item.implicitWidth : 0
+			height: item ? item.implicitHeight : 0
+			Behavior on opacity { NumberAnimation { duration: 250 }}
+			opacity: island.mode === "player" ? 1 : 0
+			}
+			Loader {
+			anchors.fill: parent
 			active: island.mode === "themeSelect"
 			source: "modules/ThemeSelect.qml"
 			width: item ? item.implicitWidth : 0
@@ -181,7 +190,3 @@ PanelWindow {
 		}
 	}
 }
-
-
-
-
