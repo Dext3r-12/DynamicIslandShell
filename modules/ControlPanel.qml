@@ -32,17 +32,10 @@ Item {
 					radius: 10
 					color: controlPanelHoverButtons.hovered ? colors.primary : colors.fg
 					Text {
-						color: controlPanelHoverButtons.hovered ? colors.bg : colors.white
-						text: {
-							if (index === 0) { return "" }
-							if (index === 1) { return "" }
-						}
 						anchors.centerIn: parent
-						font.pixelSize: {
-							if (index === 0 ) { return 32 }
-							if (index === 1 ) { return 36 }
-							else { return 28 }
-						}
+						text: index === 0 ? "" : ""
+						color: controlPanelHoverButtons.hovered ? colors.bg : colors.white
+						font.pixelSize: index === 0 ? 32 : 36
 						font.family: iconFont.name
 						Behavior on color { ColorAnimation { duration: 150 }}
 					}
@@ -50,12 +43,7 @@ Item {
 					Behavior on color { ColorAnimation { duration: 150 }}
 					TapHandler {
 						enabled: island.mode === "controlPanel"
-						onTapped: {
-							switch (index) {
-								case 0: island.mode = "wifi"; break;
-								case 1: island.mode = "wifi"; break;
-							}
-						}
+						onTapped: index === 0 ? island.mode = "wifi" : island.mode = "bluetooth"
 					}
 				}
 			}
@@ -140,8 +128,6 @@ Item {
 							case 2: return ""; break;
 							case 3: return ""; break;
 							case 4: return ""; break;
-
-							default: return "NaS";
 						}
 					}
 					font.pixelSize: {
@@ -151,8 +137,6 @@ Item {
 							case 2: return 32; break;
 							case 3: return 28; break;
 							case 4: return 32; break;
-
-							default: return 30;
 						}
 					}
 					font.family: iconFont.name
@@ -170,7 +154,6 @@ Item {
 							case 2: logoutCommand.running   = true; break
 							case 3: island.mode             = "settings"; break
 							case 4: island.mode             = "battery"; break
-							default: return;
 						}
 					}
 				}
@@ -196,71 +179,9 @@ Item {
 			property var charge: ""
 			command: ["sh", "-c", "~/.config/quickshell/scripts/battery"]
 			running: island.mode === "controlPanel"
-			stdout: StdioCollector { onStreamFinished: { battery.charge = text.trim(); console.log(battery.charge)} }
+			stdout: StdioCollector { onStreamFinished: { battery.charge = text.trim()} }
 		}
 	}
 
 	// Second row 
-	/*
-	RowLayout {
-		anchors {
-			bottom: parent.bottom
-			right: buttonsGrid.right
-			bottomMargin: 7
-		}
-		spacing: 4
-		Repeater {
-			model: 2
-			Rectangle {
-				width: {
-					switch (index) {
-						case 0: return 50; break;
-						case 1: return 40; break;
-
-						default: return "NaS";
-					}
-				}
-				height: 40
-				radius: 5
-				color: rowHover.hovered ? colors.primary : colors.fg
-				Behavior on color { ColorAnimation { duration: 200 }}
-				Behavior on radius { NumberAnimation { duration: 300; easing.type: Easing.OutCubic }}
-				Text {
-					anchors.centerIn: parent
-					text: {
-						switch (index) {
-							case 0: return ""; break;
-							case 1: return ""; break;
-
-							default: return "NaS";
-						}
-					}
-					font.pixelSize: {
-						switch (index) {
-							case 0: return 26; break;
-							case 1: return 36; break;
-
-							default: return 30;
-						}
-					}
-					font.family: iconFont.name
-					color: rowHover.hovered ? colors.bg : colors.white
-					Behavior on color { ColorAnimation { duration: 200 }}
-					Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
-				}
-				HoverHandler { id: rowHover; enabled: island.mode === "controlPanel"}
-				TapHandler { 
-					enabled: island.mode === "controlPanel"
-					onTapped: { 
-						switch (index) {
-							case 2: island.mode             = "battery"; break;
-
-							default: return;
-						}
-					}
-				}
-			}
-		}
-	}
-	*/
 }

@@ -74,6 +74,7 @@ Item {
 			height: width
 			radius: width / 2
 			color: colors.fg1
+			HoverHandler { id: cpuUsageHover; enabled: island.mode === "stressMenu"}
 			Text {
 				opacity: cpuUsageHover.hovered ? 1 : 0
 				color: "white"
@@ -92,7 +93,6 @@ Item {
 				anchors.centerIn: parent
 				Behavior on opacity { NumberAnimation { duration: 200}}
 			}
-			HoverHandler { id: cpuUsageHover; enabled: island.mode === "stressMenu"}
 
 			Shape {
 				anchors.centerIn: parent
@@ -134,6 +134,7 @@ Item {
 			height: width
 			radius: width / 2
 			color: colors.fg1
+			HoverHandler { id: gpuUsageHover; enabled: island.mode === "stressMenu"}
 			Text {
 				opacity: gpuUsageHover.hovered ? 1 : 0
 				color: "white"
@@ -152,7 +153,6 @@ Item {
 				anchors.centerIn: parent
 				Behavior on opacity { NumberAnimation { duration: 200}}
 			}
-			HoverHandler { id: gpuUsageHover; enabled: island.mode === "stressMenu"}
 
 			Shape {
 				anchors.centerIn: parent
@@ -265,6 +265,7 @@ Item {
 				l8.y = l9.y
 				l9.y = l10.y
 
+				
 				g1.y = g2.y
 				g2.y = g3.y
 				g3.y = g4.y
@@ -274,6 +275,7 @@ Item {
 				g7.y = g8.y
 				g8.y = g9.y
 				g9.y = g10.y
+				
 			}
 		}
 	}
@@ -375,11 +377,33 @@ Item {
 				anchors.fill: parent
 				anchors.bottom: parent.bottom
 				ShapePath {
+					id: gpuUsageShape
+					property var data: []
 					capStyle: ShapePath.RoundCap
-					startX: 10 
+					startX: 10
 					startY: g1.y
 					strokeWidth: 3
 					fillColor: "transparent"
+					/*
+					PathSvg {
+						path: {
+							let output = ""; 
+							let data = [usageStats.gpuUsage, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+							for (let i = 1; i <= 10; i++) {
+								let nextX = 250 - (12 * (i * 2));
+								let nextY = data[i - 1] * -1 + 120;
+
+								let prevY = data[i - 1]
+
+								output += " L " + nextX + " " + nextY;
+								data[i] = nextY;
+							}
+							console.log(output);
+							return output;
+						}
+					}
+					*/
+					
 					PathLine { x: 10; y: 120; id: g1 }
 					PathLine { x: 30; y: 120; id: g2 }
 					PathLine { x: 60; y: 120; id: g3  }
@@ -472,15 +496,22 @@ Item {
 					Behavior on strokeColor { ColorAnimation { duration: 200}}
 					strokeWidth: 4
 					capStyle: ShapePath.RoundCap
-					PathLine { x: cpuHover.hovered ? 200 : 300; 
-					y: 190
-					Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+					PathLine { 
+						x: cpuHover.hovered ? 200 : 300; 
+						y: 190
+						Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+					}
+					PathLine { 
+						x: cpuHover.hovered ? 300 : 400; 
+						y: 190
+						Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+					}
 				}
-				PathLine { x: cpuHover.hovered ? 300 : 400; 
-				y: 190
-				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
-			}
-				}
+
+				// //////////////////////////////////////////////////// //
+				// Cpu Information when you hovering cpu on 3d computer //
+				// //////////////////////////////////////////////////// //
+
 				Rectangle {
 					opacity: cpuHover.hovered ? 1 : 0
 					width: 180
@@ -513,6 +544,9 @@ Item {
 					HoverHandler { id: cpuHover; enabled: island.mode === "stressMenu" }
 				}
 
+				// //////////////////////////////////////////////////// //
+				// Ram Information when you hovering cpu on 3d computer //
+				// //////////////////////////////////////////////////// //
 
 			ShapePath {
 				startX: 200
@@ -522,13 +556,16 @@ Item {
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				Behavior on strokeColor { ColorAnimation { duration: 200}}
-				PathLine { x: ramHover.hovered ? 250 : 300; 
-				y: 90;
-				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
-			       }
-			       PathLine { x: ramHover.hovered ? 300 : 400; y: 90
-				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
-		       }
+				PathLine { 
+					x: ramHover.hovered ? 250 : 300; 
+					y: 90;
+					Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+				}
+				PathLine { 
+					x: ramHover.hovered ? 300 : 400; 
+					y: 90
+					Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+				}
 			}
 			Rectangle {
 				opacity: ramHover.hovered ? 1 : 0
@@ -562,6 +599,9 @@ Item {
 				HoverHandler { id: ramHover; enabled: island.mode === "stressMenu"}
 			}
 
+				// ///////////////////////////////////////////////////// //
+				// Gpu Information when you hovering cpu on 3d computer  //
+				// ///////////////////////////////////////////////////// //
 
 			ShapePath {
 				startX: 157
@@ -571,13 +611,16 @@ Item {
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				Behavior on strokeColor { ColorAnimation { duration: 500; easing.type: Easing.OutCubic}}
-				PathLine { x: gpuHover.hovered ? 250 : 350; 
-				y: 290
-				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
-			}
-			PathLine { x: gpuHover.hovered ? 300 : 400; y: 290
-			Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
-		}
+				PathLine { 
+					x: gpuHover.hovered ? 250 : 350; 
+					y: 290
+					Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+				}
+				PathLine { 
+					x: gpuHover.hovered ? 300 : 400; 
+					y: 290
+					Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+				}
 			}
 			Rectangle {
 				opacity: gpuHover.hovered ? 1 : 0
@@ -610,6 +653,11 @@ Item {
 				color: "transparent"
 				HoverHandler { id: gpuHover; enabled: island.mode === "stressMenu" }
 			}
+
+				// ///////////////////////////////////////////////////// //
+				// Disk Information when you hovering cpu on 3d computer //
+				// ///////////////////////////////////////////////////// //
+
 			ShapePath {
 				startX: 290
 				startY: 300
@@ -618,13 +666,16 @@ Item {
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				Behavior on strokeColor { ColorAnimation { duration: 500; easing.type: Easing.OutCubic}}
-				PathLine { x: diskHover.hovered ? 320 : 450; 
-				y: 280
-				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
-			}
-			PathLine { x: diskHover.hovered ? 320 : 450; y: 257
-			Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
-		}
+				PathLine { 
+					x: diskHover.hovered ? 320 : 450; 
+					y: 280
+					Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+				}
+				PathLine { 
+					x: diskHover.hovered ? 320 : 450; 
+					y: 257
+					Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
+				}
 			}
 			Rectangle {
 				opacity: diskHover.hovered ? 1 : 0
