@@ -108,7 +108,7 @@ Item {
 		}
 		spacing: 4
 		Repeater {
-			model: battery.charge === "computer" ? 4 : 5
+			model: 5// battery.charge === "computer" ? 4 : 5
 			Rectangle {
 				height: 45
 				radius: 10

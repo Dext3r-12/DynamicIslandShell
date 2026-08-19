@@ -23,30 +23,43 @@ Item {
 				TapHandler {
 					enabled: island.mode === "themeSelect"
 					onTapped: {
-						if ( index === 0 ) { colors.activeTheme = "catppuccin"}
-						if ( index === 1 ) { colors.activeTheme = "gruvbox"}
-						if ( index === 2 ) { colors.activeTheme = "cherryblossom"}
-						if ( index === 3 ) { colors.activeTheme = "Nord"}
-						if ( index === 4 ) { colors.activeTheme = "rosepine"}
-						if ( index === 5 ) { colors.activeTheme = "catppuccin"}
+						switch (index) {
+							case 0: colors.activeTheme = "catppuccin"; break;
+							case 1: colors.activeTheme = "gruvbox"; break;
+							case 2: colors.activeTheme = "cherryblossom"; break;
+							case 3: colors.activeTheme = "cherryblossom"; break;
+							case 4: colors.activeTheme = "rosepine"; break;
+							case 5: colors.activeTheme = "wallpaper"; break;
+						}
 					}
 				}
 				Text {
 					id: themeText
 					text: {
-						if ( index === 0 ) { return "Catppuccin" }
-						if ( index === 1 ) { return "Gruvbox" }
-						if ( index === 2 ) { return "Cherry-Blossom"}
-						if ( index === 3 ) { return "Nord"}
-						if ( index === 4 ) { return "Rose-Pine"}
-						if ( index === 5 ) { return "TokyoNight"}
+						switch (index) {
+							case 0: return "Catppuccin"; break;
+							case 1: return "Gruvbox"; break;
+							case 2: return "Cherry-Blossom"; break;
+							case 3: return "TokyoNight"; break;
+							case 4: return "Rose-Pine"; break;
+							case 5: return "Auto"; break;
+						}
 					}
 					anchors.top: parent.top
 					anchors.topMargin: 5
 					anchors.horizontalCenter: parent.horizontalCenter
 					font.pixelSize: 18
 					font.family: "Jetbrains Mono"
-					color: colors.white
+					color: {
+						switch (index) {
+							case 0: return colors.catppuccin[11]; break;
+							case 1: return colors.gruvbox[10]; break;
+							case 2: return colors.cherryblossom[5]; break;
+							case 3: return colors.white; break;
+							case 4: return colors.rosepine[8]; break;
+							case 5: return colors.wallpaperColors[7]; break;
+						}
+					}
 					RowLayout {
 						spacing: 10
 						anchors.horizontalCenter: parent.horizontalCenter
@@ -82,6 +95,12 @@ Item {
 										if ( index === 1 ) { return colors.cherryblossom[1] }
 										if ( index === 2 ) { return colors.cherryblossom[2] }
 										if ( index === 3 ) { return colors.cherryblossom[4] }
+									}
+									else if ( themeText.text === "Auto" ) { 
+										if ( index === 0 ) { return colors.wallpaperColors[0] }
+										if ( index === 1 ) { return colors.wallpaperColors[1] }
+										if ( index === 2 ) { return colors.wallpaperColors[2] }
+										if ( index === 3 ) { return colors.wallpaperColors[4] }
 									}
 									else { return "purple" }
 								}

@@ -11,7 +11,8 @@ Item {
 		if (activeTheme === "gruvbox"      ) { return gruvbox[0] }
 		if (activeTheme === "rosepine"     ) { return rosepine[0] }
 		if (activeTheme === "cherryblossom") { return cherryblossom[0] }
-		else { return activeTheme[13]}
+		if (activeTheme === "wallpaper"    ) { return wallpaperColors[0] }
+		else { return "purple"}
 	} 
 
 	property color fg:  {
@@ -19,7 +20,8 @@ Item {
 		if (activeTheme === "gruvbox"      ) { return gruvbox[1] }
 		if (activeTheme === "rosepine"     ) { return rosepine[1] }
 		if (activeTheme === "cherryblossom") { return cherryblossom[1] }
-		else { return activeTheme[13]}
+		if (activeTheme === "wallpaper"    ) { return Qt.lighter(wallpaperColors[1], 0.45) }
+		else { return "purple"}
 	} 
 
 	property color fg1:  {
@@ -27,7 +29,8 @@ Item {
 		if (activeTheme === "gruvbox"      ) { return gruvbox[2] }
 		if (activeTheme === "rosepine"     ) { return rosepine[2] }
 		if (activeTheme === "cherryblossom") { return cherryblossom[2] }
-		else { return activeTheme[13]}
+		if (activeTheme === "wallpaper"    ) { return Qt.lighter(wallpaperColors[2], 0.5) }
+		else { return "purple"}
 	} 
 
 	property color primary:  {
@@ -35,7 +38,8 @@ Item {
 		if (activeTheme === "gruvbox"      ) { return gruvbox[8] }
 		if (activeTheme === "rosepine"     ) { return rosepine[4] }
 		if (activeTheme === "cherryblossom") { return cherryblossom[4] }
-		else { return activeTheme[13]}
+		if (activeTheme === "wallpaper"    ) { return wallpaperColors[6] }
+		else { return "purple"}
 	} 
 
 	property color white: {
@@ -43,7 +47,8 @@ Item {
 		if (activeTheme === "gruvbox"      ) { return gruvbox[10] }
 		if (activeTheme === "rosepine"     ) { return rosepine[5] }
 		if (activeTheme === "cherryblossom") { return cherryblossom[5] }
-		else { return activeTheme[13]}
+		if (activeTheme === "wallpaper"    ) { return wallpaperColors[7] }
+		else { return "purple"}
 	} 
 
 	property color red: {
@@ -51,7 +56,8 @@ Item {
 		if (activeTheme === "gruvbox"      ) { return gruvbox[11] }
 		if (activeTheme === "rosepine"     ) { return rosepine[8] }
 		if (activeTheme === "cherryblossom") { return cherryblossom[7] }
-		else { return activeTheme[13]}
+		if (activeTheme === "wallpaper"    ) { return wallpaperColors[4] }
+		else { return "purple"}
 	} 
 
 	property color green: {
@@ -59,7 +65,8 @@ Item {
 		if (activeTheme === "gruvbox"      ) { return gruvbox[13] }
 		if (activeTheme === "rosepine"     ) { return rosepine[10] }
 		if (activeTheme === "cherryblossom") { return cherryblossom[8] }
-		else { return activeTheme[13]}
+		if (activeTheme === "wallpaper"    ) { return wallpaperColors[8] }
+		else { return "purple"}
 	} 
 
 	property color blue: {
@@ -67,7 +74,8 @@ Item {
 		if (activeTheme === "gruvbox"      ) { return gruvbox[12] }
 		if (activeTheme === "rosepine"     ) { return rosepine[9] }
 		if (activeTheme === "cherryblossom") { return cherryblossom[6] }
-		else { return activeTheme[13]}
+		if (activeTheme === "wallpaper"    ) { return wallpaperColors[6] }
+		else { return "purple"}
 	} 
 
 	property string activeTheme: "cherryblossom"
@@ -152,13 +160,14 @@ Item {
 ]
 
 	Process {
-		running: false
+		running: true
 		command: ["sh", "-c", "cat ~/.cache/wal/colors"]
 		stdout: StdioCollector { 
 			id: colorSource 
 			onStreamFinished: {
 				var lines = colorSource.text.trim().split('\n')
 				wallpaperColors = lines
+				console.log(wallpaperColors)
 			}
 		}
 	}
