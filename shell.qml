@@ -24,6 +24,11 @@ PanelWindow {
 		id: iconFont
 		source: "./assets/icons.ttf"
 	}
+	// title
+	FontLoader {
+		id: titleFont
+		source: "./assets/Milker.otf"
+	}
 
 
 
@@ -34,14 +39,6 @@ PanelWindow {
 		onPressed: {
 			if (island.mode === "controlPanel") { island.mode = "idle" }
 			else { island.mode = "controlPanel" }
-		}
-	}
-	GlobalShortcut {
-		id: power
-		name: "powerMenu"
-		onPressed: {
-			if (island.mode === "powerMenu") { island.mode = "idle" }
-			else { island.mode = "powerMenu" }
 		}
 	}
 	GlobalShortcut {
@@ -76,7 +73,7 @@ PanelWindow {
 					case "hovered":        return 85; break;
 					case "powerMenu":      return 70; break;
 					case "stressMenu":     return 420; break;
-					case "controlPanel":   return 160; break;
+					case "controlPanel":   return 170; break;
 					case "wifi":           return 400; break;
 					case "battery":        return 300; break;
 					case "themeSelect":    return 170; break;
@@ -147,6 +144,7 @@ PanelWindow {
 			Behavior on opacity { NumberAnimation { duration: 250 }}
 			opacity: island.mode === "stressMenu" ? 1 : 0
 			}
+
 			Loader {
 			anchors.fill: parent
 			active: island.mode === "battery"
@@ -156,15 +154,7 @@ PanelWindow {
 			Behavior on opacity { NumberAnimation { duration: 250 }}
 			opacity: island.mode === "battery" ? 1 : 0
 			}
-			Loader {
-			anchors.fill: parent
-			active: island.mode === "powerMenu"
-			source: "modules/PowerMenu.qml"
-			width: item ? item.implicitWidth : 0
-			height: item ? item.implicitHeight : 0
-			Behavior on opacity { NumberAnimation { duration: 250 }}
-			opacity: island.mode === "powerMenu" ? 1 : 0
-			}
+
 			Loader {
 			anchors.fill: parent
 			active: island.mode === "player"
@@ -174,6 +164,7 @@ PanelWindow {
 			Behavior on opacity { NumberAnimation { duration: 250 }}
 			opacity: island.mode === "player" ? 1 : 0
 			}
+
 			Loader {
 			anchors.fill: parent
 			active: island.mode === "themeSelect"
@@ -183,8 +174,18 @@ PanelWindow {
 			Behavior on opacity { NumberAnimation { duration: 250 }}
 			opacity: island.mode === "themeSelect" ? 1 : 0
 			}
+
+			Loader {
+			anchors.fill: parent
+			active: island.mode === "controlPanel"
+			source: "modules/ControlPanel.qml"
+			width: item ? item.implicitWidth : 0
+			height: item ? item.implicitHeight : 0
+			Behavior on opacity { NumberAnimation { duration: 250 }}
+			opacity: island.mode === "controlPanel" ? 1 : 0
+			}
+
 			Hovered {}
-			ControlPanel {}
 			Search { id: searchRoot }
 			Colors { id: colors }
 		}

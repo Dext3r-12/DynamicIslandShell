@@ -45,41 +45,7 @@ Item {
 					Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
 				}
 				HoverHandler { id: rowHover; enabled: island.mode === "powerMenu"}
-				TapHandler { 
-					enabled: island.mode === "powerMenu"
-					onTapped: { 
-						if (index === 0 ) { shutdownCommand.running = true }
-						if (index === 1 ) { rebootCommand.running = true }
-						if (index === 2 ) { logoutCommand.running = true }
-						if (index === 3 ) { pickerCommand.running = true } 
-					}
-				}
 			}
 		}
-	}
-	Process {
-		id: shutdownCommand
-		command: ["poweroff"]
-		running: false
-	}
-	Process {
-		id: rebootCommand
-		command: ["reboot"]
-		running: false
-	}
-	Process {
-		id: logoutCommand
-		command: ["sh", "-c", "hyprctl dispatch 'hl.dsp.exit()'"]
-		running: false
-	}
-	Process {
-		id: wallpaperCommand
-		command: ["hyprctl", "dispatch", "exit"]
-		running: false
-	}
-	Process {
-		id: pickerCommand
-		command: ["sh", "-c", "sleep 0.4 && hyprpicker -a"]
-		running: false
 	}
 }

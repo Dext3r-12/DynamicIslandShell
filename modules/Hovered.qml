@@ -152,7 +152,7 @@ Item {
 			}
 		}
 	}
-	property var eqInfo: []
+	property var eqInfo: ["0", "0", "0", "0", "0", "0"]
 	Process {
 		id: eqGet
 		running: island.mode === "hovered" 
@@ -166,5 +166,5 @@ Item {
 
 	// Other
 	Volume {}
-	PlayerModule {}
+	PlayerModule { id: playerWidget }
 }

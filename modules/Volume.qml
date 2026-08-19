@@ -44,7 +44,7 @@ Item {
 			height: isMuted ? 40 : 0
 			radius: 5
 			anchors.centerIn: parent
-			color: colors.primary
+			color: colors.white
 
 			rotation: 40
 
@@ -94,7 +94,7 @@ Item {
 
 	    Text {
 		id: volValue
-		color: colors.primary
+		color: colors.white
 		font.pixelSize: 22
 		font.family: "Jetbrains Mono"
 		anchors {

@@ -10,115 +10,257 @@ Item {
 	anchors.fill: parent
 	opacity: island.mode === "controlPanel" ? 1 : 0
 	Behavior on opacity { NumberAnimation { duration: 100 } }
-	GridLayout {
+	ColumnLayout {
+		id: buttonsGrid
+		width: 300
 		anchors {
 			horizontalCenter: parent.horizontalCenter
 			bottom: parent.bottom
-			bottomMargin: 50
+			bottomMargin: 60
 		}
-		rows: 2
-		columns: 3
-		rowSpacing: 3
-		columnSpacing: 3
-		Repeater {
-			model: 6
-			Rectangle {
-				width: 100
-				height: 50
-				radius: 10
-				color: controlPanelHoverButtons.hovered ? colors.primary : colors.fg
-				Text {
-					color: controlPanelHoverButtons.hovered ? colors.bg : colors.white
-					text: {
-						if (index === 0) { return "" }
-						if (index === 1) { return "" }
-						if (index === 2) { return "" }
-						if (index === 3) { return "" }
-						if (index === 4) { return "" }
-						if (index === 5) { return "" }
+
+
+		// First row --- Wifi and Bluetooth
+
+		RowLayout {
+			Layout.alignment: Qt.AlignHCenter
+			Repeater {
+				model: 2
+				Rectangle {
+					Layout.fillWidth: true
+					height: 50
+					radius: 10
+					color: controlPanelHoverButtons.hovered ? colors.primary : colors.fg
+					Text {
+						color: controlPanelHoverButtons.hovered ? colors.bg : colors.white
+						text: {
+							if (index === 0) { return "" }
+							if (index === 1) { return "" }
+						}
+						anchors.centerIn: parent
+						font.pixelSize: {
+							if (index === 0 ) { return 32 }
+							if (index === 1 ) { return 36 }
+							else { return 28 }
+						}
+						font.family: iconFont.name
+						Behavior on color { ColorAnimation { duration: 150 }}
 					}
-					anchors.centerIn: parent
-					font.pixelSize: {
-						if (index === 1 ) { return 32 }
-						if (index === 2 ) { return 34 }
-						if (index === 3 ) { return 28 }
-						else { return 28 }
-					}
-					font.family: iconFont.name
+					HoverHandler { id: controlPanelHoverButtons; enabled: island.mode === "controlPanel" }
 					Behavior on color { ColorAnimation { duration: 150 }}
+					TapHandler {
+						enabled: island.mode === "controlPanel"
+						onTapped: {
+							switch (index) {
+								case 0: island.mode = "wifi"; break;
+								case 1: island.mode = "wifi"; break;
+							}
+						}
+					}
 				}
-				HoverHandler { id: controlPanelHoverButtons; enabled: island.mode === "controlPanel" }
-				Behavior on color { ColorAnimation { duration: 150 }}
-				TapHandler {
-					enabled: island.mode === "controlPanel"
-					onTapped: {
-						if (index === 0) { island.mode = "wifi" }
-						if (index === 1) { island.mode = "wifi" }
-						if (index === 2) { island.mode = "wifi" }
-						if (index === 3) { island.mode = "stressMenu" }
-						if (index === 4) { island.mode = "wifi" }
-						if (index === 5) { island.mode = "themeSelect" }
+			}
+		}
+
+		// Second row --- stress, wallpaper and palette
+
+		RowLayout {
+			Layout.alignment: Qt.AlignHCenter
+			Repeater {
+				model: 3
+				Rectangle {
+					Layout.fillWidth: true
+					height: 50
+					radius: 10
+					color: controlPanelHoverButtons.hovered ? colors.primary : colors.fg
+					Text {
+						color: controlPanelHoverButtons.hovered ? colors.bg : colors.white
+						text: {
+							switch (index) {
+								case 0: return ""; break;
+								case 1: return ""; break;
+								case 2: return ""; break;
+							}
+						}
+						anchors.centerIn: parent
+						font.pixelSize: {
+							switch (index) {
+								case 0: return 32; break;
+								case 1: return 34; break;
+								case 2: return 28; break;
+							}
+						}
+						font.family: iconFont.name
+						Behavior on color { ColorAnimation { duration: 150 }}
+					}
+					HoverHandler { id: controlPanelHoverButtons; enabled: island.mode === "controlPanel" }
+					Behavior on color { ColorAnimation { duration: 150 }}
+					TapHandler {
+						enabled: island.mode === "controlPanel"
+						onTapped: {
+							switch (index) {
+								case 0: island.mode = "stressMenu"; break;
+								case 1: island.mode = "wallpaper"; break;
+								case 2: island.mode = "themeSelect"; break;
+							}
+						}
 					}
 				}
 			}
 		}
 	}
+
+	// Third row --- power options, settings and battery
+	
 	RowLayout {
 		anchors {
-			horizontalCenter: parent.horizontalCenter
 			bottom: parent.bottom
+			left: buttonsGrid.left
+			right: buttonsGrid.right
 			bottomMargin: 10
 		}
-		spacing: 10
+		spacing: 4
 		Repeater {
-			model: battery.percent === "computer" ? 3 : 3
+			model: battery.charge === "computer" ? 4 : 5
 			Rectangle {
-				height: 30
-				width: height
-				radius: width / 2
-				color: colors.fg
-				Text {
-					text: {
-						if ( index === 0 ) { return "" }
-						if ( index === 1 ) { return "󰍃" }
-						if ( index === 2 ) { 
-							if (battery.Percent >= 97) { return "󰁹" }
-							else if (battery.percent >= 90) { return "󰂂" }
-							else if (battery.percent >= 80) { return "󰂁" }
-							else if (battery.percent >= 70) { return "󰂀" }
-							else if (battery.percent >= 60) { return "󰁿" }
-							else if (battery.percent >= 50) { return "󰁾" }
-							else if (battery.percent >= 40) { return "󰁽" }
-							else if (battery.percent >= 30) { return "󰁼" }
-							else if (battery.percent >= 20) { return "󰁼" }
-							else if (battery.percent >= 10) { return "󰁻" }
-							else { return "󰁺" }
-					       	}
-					}
-					anchors.centerIn: parent
-					color: colors.white
-					font.pixelSize: 16
+				height: 45
+				radius: 10
+				Layout.fillWidth: true
+				color: {
+					if (index === 0 || index === 1 || index === 2) { return rowHover.hovered ? colors.red : colors.fg } 
+					else { return rowHover.hovered ? colors.primary : colors.fg }
 				}
-				TapHandler {
+				Behavior on color { ColorAnimation { duration: 200 }}
+				Behavior on radius { NumberAnimation { duration: 300; easing.type: Easing.OutCubic }}
+				Text {
+					anchors.centerIn: parent
+					text: {
+						switch (index) {
+							case 0: return ""; break;
+							case 1: return ""; break;
+							case 2: return ""; break;
+							case 3: return ""; break;
+							case 4: return ""; break;
+
+							default: return "NaS";
+						}
+					}
+					font.pixelSize: {
+						switch (index) {
+							case 0: return 26; break;
+							case 1: return 36; break;
+							case 2: return 32; break;
+							case 3: return 28; break;
+							case 4: return 32; break;
+
+							default: return 30;
+						}
+					}
+					font.family: iconFont.name
+					color: rowHover.hovered ? colors.bg : colors.white
+					Behavior on color { ColorAnimation { duration: 200 }}
+					Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
+				}
+				HoverHandler { id: rowHover; enabled: island.mode === "controlPanel"}
+				TapHandler { 
 					enabled: island.mode === "controlPanel"
-					onTapped: {
-						if ( index === 0 ) { shutdownCommand.running = true }
-						if ( index === 1 ) { logoutCommand.running = true }
-						if ( index === 2 ) { island.mode = "battery" }
+					onTapped: { 
+						switch (index) {
+							case 0: shutdownCommand.running = true; break
+							case 1: rebootCommand.running   = true; break
+							case 2: logoutCommand.running   = true; break
+							case 3: island.mode             = "settings"; break
+							case 4: island.mode             = "battery"; break
+							default: return;
+						}
 					}
 				}
 			}
 		}
 		Process {
+			id: shutdownCommand
+			command: ["poweroff"]
+			running: false
+		}
+		Process {
+			id: rebootCommand
+			command: ["reboot"]
+			running: false
+		}
+		Process {
+			id: logoutCommand
+			command: ["sh", "-c", "hyprctl dispatch 'hl.dsp.exit()'"]
+			running: false
+		}
+		Process {
 			id: battery
-			property string percent: ""
-			running: island.mode === "controlPanel"
+			property var charge: ""
 			command: ["sh", "-c", "~/.config/quickshell/scripts/battery"]
-			stdout: StdioCollector { 
-				onStreamFinished: {
-					battery.percent = text.trim()
+			running: island.mode === "controlPanel"
+			stdout: StdioCollector { onStreamFinished: { battery.charge = text.trim(); console.log(battery.charge)} }
+		}
+	}
+
+	// Second row 
+	/*
+	RowLayout {
+		anchors {
+			bottom: parent.bottom
+			right: buttonsGrid.right
+			bottomMargin: 7
+		}
+		spacing: 4
+		Repeater {
+			model: 2
+			Rectangle {
+				width: {
+					switch (index) {
+						case 0: return 50; break;
+						case 1: return 40; break;
+
+						default: return "NaS";
+					}
+				}
+				height: 40
+				radius: 5
+				color: rowHover.hovered ? colors.primary : colors.fg
+				Behavior on color { ColorAnimation { duration: 200 }}
+				Behavior on radius { NumberAnimation { duration: 300; easing.type: Easing.OutCubic }}
+				Text {
+					anchors.centerIn: parent
+					text: {
+						switch (index) {
+							case 0: return ""; break;
+							case 1: return ""; break;
+
+							default: return "NaS";
+						}
+					}
+					font.pixelSize: {
+						switch (index) {
+							case 0: return 26; break;
+							case 1: return 36; break;
+
+							default: return 30;
+						}
+					}
+					font.family: iconFont.name
+					color: rowHover.hovered ? colors.bg : colors.white
+					Behavior on color { ColorAnimation { duration: 200 }}
+					Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
+				}
+				HoverHandler { id: rowHover; enabled: island.mode === "controlPanel"}
+				TapHandler { 
+					enabled: island.mode === "controlPanel"
+					onTapped: { 
+						switch (index) {
+							case 2: island.mode             = "battery"; break;
+
+							default: return;
+						}
+					}
 				}
 			}
 		}
 	}
+	*/
 }

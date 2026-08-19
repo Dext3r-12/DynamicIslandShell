@@ -5,7 +5,7 @@ import QtQuick.Layouts
 Item {
 	anchors.fill: parent
 	opacity: island.mode === "themeSelect" ? 1 : 0
-	enabled: island.mode === "powerMenu" ? 1 : 0
+	enabled: island.mode === "themeSelect" ? 1 : 0
 	GridLayout {
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: 15

@@ -10,6 +10,7 @@ Item {
 	Repeater {
 		model: 8
 		Rectangle {
+			id: playerPetals
 			color: playerStat.text.trim() === "Playing" ? colors.primary : colors.fg
 			Behavior on color { ColorAnimation { duration: 150 }}
 			Behavior on height { NumberAnimation { duration: 20 }}
