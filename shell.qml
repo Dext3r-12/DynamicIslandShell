@@ -43,6 +43,9 @@ PanelWindow {
 		name: "stressMenu"
 		onPressed: checkMode("stressMenu")
 	}
+	mask: Region {
+		item: island
+	}
 	Rectangle {
 		id: island
 		property string mode: "idle"
