@@ -8,7 +8,6 @@ Text {
 	anchors.horizontalCenter: parent.horizontalCenter
 	text: Qt.formatDateTime(new Date(), "hh:mm")
 	color: "#F0F4F8"
-	font.family: "Jetbrains Mono"
 
 	Behavior on font.pixelSize { NumberAnimation {duration: 80} }
 	Timer {

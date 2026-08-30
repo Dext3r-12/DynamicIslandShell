@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import "../services"
 
 Item {
 	enabled: island.mode === "search"
@@ -15,7 +16,7 @@ Item {
 		width: 290
 		height: 33
 		y: 33 * selected
-		color: allApps.length === 1 ? "transparent" : colors.primary
+		color: allApps.length === 1 ? "transparent" : Colors.primary
 		radius: 10
 		Behavior on y { NumberAnimation { duration: 200; easing.type: Easing.OutCubic}}
 	}
@@ -30,9 +31,9 @@ Item {
 		anchors.left: parent.left
 		anchors.leftMargin: 14
 		anchors.top: parent.top
-		anchors.topMargin: 4
+		anchors.topMargin: 6
 		text: ""
-		color: colors.white
+		color: Colors.white
 		font.pixelSize: 14
 	}
 	TextField {
@@ -46,7 +47,7 @@ Item {
 		focus: true
 		placeholderText: "Search.."
 		placeholderTextColor: "#6e6e6e"
-		color: colors.white
+		color: Colors.white
 		horizontalAlignment: TextInput.AlignHCenter
 		background: Rectangle { color: "transparent" }
 		Keys.onPressed: (event) => {
@@ -92,11 +93,11 @@ Item {
 	Process {
 		id: launchApp
 		running: false
-		command: ["sh", "-c", ` ~/.config/quickshell/scripts/launch_app <<<  "${allApps[selected - 1].trim()}"`]
+		command: ["sh", "-c", `echo "${allApps[selected - 1].trim()}" | ~/.config/quickshell/services/scripts/launch_app`]
 	}
 	Process {
 		id: checkApps
-		command: ["sh", "-c", ` ~/.config/quickshell/scripts/search <<<  "${appPrompt.trim()}"`]
+		command: ["sh", "-c", `echo "${appPrompt.trim()}" | ~/.config/quickshell/services/scripts/search`]
 		running: false
 		stdout: StdioCollector {
 			onStreamFinished: {
@@ -126,7 +127,7 @@ Item {
 					anchors.leftMargin: 15
 					font.family: "Jetbrains Mono"
 					font.pixelSize: 16
-					color: index === selected - 1 ? colors.bg : colors.white
+					color: index === selected - 1 ? Colors.bg : Colors.white
 					Behavior on color { ColorAnimation { duration: 200; easing.type: Easing.OutCubic}}
 				}
 			}

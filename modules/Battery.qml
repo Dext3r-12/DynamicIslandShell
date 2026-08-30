@@ -3,7 +3,8 @@ import Quickshell.Widgets
 import Quickshell.Io
 import QtQuick
 import Qt5Compat.GraphicalEffects
-import qs
+
+import "../services"
 
 Item {
 	anchors.fill: parent
@@ -20,7 +21,7 @@ Item {
 			height: 230
 			y: -105
 			radius: 10
-			color: colors.fg
+			color: Colors.fg
 			Rectangle {
 				width: 50
 				height: 20
@@ -28,7 +29,7 @@ Item {
 				anchors.bottom: parent.top
 				anchors.bottomMargin: 5
 				radius: 5
-				color: colors.fg
+				color: Colors.fg
 			}
 		}
 		Rectangle { 
@@ -37,31 +38,28 @@ Item {
 			anchors.leftMargin: -70
 			anchors.bottom: batteryBase.bottom
 			width: 150 
-			height: (batteryPercent.text.trim() * 230) / 100
+			height: (Battery.percent * 230) / 100
 			Behavior on height { NumberAnimation { duration: 350; easing.type: Easing.OutCubic } }
 			y: -105
 			radius: 10
-			color: colors.green
+			color: {
+				if ( Battery.percent > 30 ) { return Colors.green }
+				if ( Battery.percent > 20 ) { return "yellow" }
+				else 			    { return Colors.red }
+				}
 		}
 		Text {
 			anchors.centerIn: batteryBase
-			text: batteryPercent.text.trim()
+			text: Battery.percent
 			font.pixelSize: 78
 			font.family: "Jetbrains Mono"
-			color: batteryPercent.text.trim() >= 40 ? theme.fg : theme.white
+			color: Battery.percent >= 60 ? Colors.fg : Colors.white
 		}
-	}
-	Process {
-		id: batteryProcess
-		running: island.mode === "battery"
-		command: ["sh", "-c", "upower -i $(upower -e | grep BAT) | grep percentage | awk '{print $2}' | tr -d '%'"]
-		stdout: StdioCollector { id: batteryPercent }
-	}
-	Timer {
-		running: island.mode === "battery"
-		repeat: true
-		interval: 1000
-		onTriggered: { batteryProcess.running = false; batteryProcess.running = true; }
+		Binding {
+			target: Battery
+			property: "isRunning"
+			value: island.mode === "battery"
+		}
 	}
 }
 

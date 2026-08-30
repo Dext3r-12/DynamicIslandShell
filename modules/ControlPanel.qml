@@ -3,7 +3,8 @@ import Quickshell.Widgets
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
-import qs
+
+import "../services"
 
 
 Item {
@@ -30,13 +31,13 @@ Item {
 					Layout.fillWidth: true
 					height: 50
 					radius: 10
-					color: controlPanelHoverButtons.hovered ? colors.primary : colors.fg
+					color: controlPanelHoverButtons.hovered ? Colors.primary : Colors.fg
 					Text {
 						anchors.centerIn: parent
 						text: index === 0 ? "" : ""
-						color: controlPanelHoverButtons.hovered ? colors.bg : colors.white
+						color: controlPanelHoverButtons.hovered ? Colors.bg : Colors.white
 						font.pixelSize: index === 0 ? 32 : 36
-						font.family: iconFont.name
+						font.family: Fonts.iconFont.name
 						Behavior on color { ColorAnimation { duration: 150 }}
 					}
 					HoverHandler { id: controlPanelHoverButtons; enabled: island.mode === "controlPanel" }
@@ -59,9 +60,9 @@ Item {
 					Layout.fillWidth: true
 					height: 50
 					radius: 10
-					color: controlPanelHoverButtons.hovered ? colors.primary : colors.fg
+					color: controlPanelHoverButtons.hovered ? Colors.primary : Colors.fg
 					Text {
-						color: controlPanelHoverButtons.hovered ? colors.bg : colors.white
+						color: controlPanelHoverButtons.hovered ? Colors.bg : Colors.white
 						text: {
 							switch (index) {
 								case 0: return ""; break;
@@ -77,7 +78,7 @@ Item {
 								case 2: return 28; break;
 							}
 						}
-						font.family: iconFont.name
+						font.family: Fonts.iconFont.name
 						Behavior on color { ColorAnimation { duration: 150 }}
 					}
 					HoverHandler { id: controlPanelHoverButtons; enabled: island.mode === "controlPanel" }
@@ -108,14 +109,14 @@ Item {
 		}
 		spacing: 4
 		Repeater {
-			model: 5// battery.charge === "computer" ? 4 : 5
+			model: battery.charge === "computer" ? 4 : 5
 			Rectangle {
 				height: 45
 				radius: 10
 				Layout.fillWidth: true
 				color: {
-					if (index === 0 || index === 1 || index === 2) { return rowHover.hovered ? colors.red : colors.fg } 
-					else { return rowHover.hovered ? colors.primary : colors.fg }
+					if (index === 0 || index === 1 || index === 2) { return rowHover.hovered ? Colors.red : Colors.fg } 
+					else { return rowHover.hovered ? Colors.primary : Colors.fg }
 				}
 				Behavior on color { ColorAnimation { duration: 200 }}
 				Behavior on radius { NumberAnimation { duration: 300; easing.type: Easing.OutCubic }}
@@ -139,8 +140,8 @@ Item {
 							case 4: return 32; break;
 						}
 					}
-					font.family: iconFont.name
-					color: rowHover.hovered ? colors.bg : colors.white
+					font.family: Fonts.iconFont.name
+					color: rowHover.hovered ? Colors.bg : Colors.white
 					Behavior on color { ColorAnimation { duration: 200 }}
 					Behavior on font.pixelSize { NumberAnimation { duration: 400; easing.type: Easing.OutCubic; }}
 				}
@@ -149,11 +150,13 @@ Item {
 					enabled: island.mode === "controlPanel"
 					onTapped: { 
 						switch (index) {
-							case 0: shutdownCommand.running = true; break
-							case 1: rebootCommand.running   = true; break
-							case 2: logoutCommand.running   = true; break
-							case 3: island.mode             = "settings"; break
-							case 4: island.mode             = "battery"; break
+							case 0: shutdownCommand.running   = true; break
+							case 1: rebootCommand.running     = true; break
+							case 2: logoutCommand.running     = true; break
+							case 3: island.mode               = "idle";
+								settingsMenuLoader.isOpen = false;
+								settingsMenuLoader.isOpen = true; break
+							case 4: island.mode               = "battery"; break
 						}
 					}
 				}

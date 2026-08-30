@@ -4,20 +4,21 @@ import QtQuick
 import QtQuick.Shapes
 import Quickshell.Services.Pipewire
 
+import "../services"
 
 Item {
 	anchors.fill: parent
 	Rectangle {
 		id: volBG
 		anchors {
-		    verticalCenter: parent.verticalCenter
-		    left: parent.left
-		    leftMargin: 15
+			verticalCenter: parent.verticalCenter
+			left: parent.left
+			leftMargin: 15
 		}
 		width: 55
 		height: 55
 		radius: width / 2
-		color: colors.fg
+		color: Colors.fg
 		HoverHandler { id: volHover; enabled: island.mode === "hovered"}
 		MouseArea {
 			enabled: island.mode === "hovered"
@@ -44,7 +45,7 @@ Item {
 			height: isMuted ? 40 : 0
 			radius: 5
 			anchors.centerIn: parent
-			color: colors.white
+			color: Colors.white
 
 			rotation: 40
 
@@ -56,7 +57,7 @@ Item {
 			layer.samples: 6
 			ShapePath {
 				fillColor: "transparent"
-				strokeColor: colors.primary
+				strokeColor: Colors.primary
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				PathAngleArc {
@@ -64,7 +65,6 @@ Item {
 					centerY: 31
 					radiusX: 27
 					radiusY: 27
-
 					startAngle: -90
 					sweepAngle: volumeText * 3.6
 					Behavior on sweepAngle { NumberAnimation { duration: 150; easing.type: Easing.OutCubic }}
@@ -94,7 +94,7 @@ Item {
 
 	    Text {
 		id: volValue
-		color: colors.white
+		color: Colors.white
 		font.pixelSize: 22
 		font.family: "Jetbrains Mono"
 		anchors {
@@ -105,9 +105,9 @@ Item {
 		Behavior on opacity { NumberAnimation { duration: 150}}
 	    }
 	    Text {
-		color: colors.white
+		color: Colors.white
 		font.pixelSize: 23
-		font.family: iconFont.name
+		font.family: Fonts.iconFont.name
 		anchors {
 		    centerIn: volBG
 		}
@@ -115,28 +115,15 @@ Item {
 		opacity: volHover.hovered ? 0 : 1
 		Behavior on opacity { NumberAnimation { duration: 150}}
 	    }
-	    /*
-	    Image {
-		source: "../icons/headphones.png"
-		anchors.centerIn: volBG
-		fillMode: Image.PreserveAspectFit
-		width: 23
-		height: width
-		opacity: volHover.hovered ? 0 : 1
-		Behavior on opacity { NumberAnimation { duration: 150}}
-	}*/
-
 	    Process {
 		id: volReader
 		command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"]
-
 		stdout: SplitParser {
 		    onRead: data => {
 			let trimmed = data.trim();
 			if (!trimmed) return;
 
 			if (trimmed.includes("[MUTED]")) {
-			    //volumeText = "M";
 			    isMuted = true
 			} else {
 			    isMuted = false
@@ -149,15 +136,9 @@ Item {
 		}
 	    }
 
-	    onIsExpandedChanged: {
-		if (isExpanded) {
-		    volReader.running = false;
-		    volReader.running = true;
-		}
-	    }
 
 	    Timer {
-		interval: 60
+		interval: 50
 		repeat: true
 
 		running: island.mode === "hovered"

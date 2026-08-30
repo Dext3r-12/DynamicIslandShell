@@ -2,21 +2,21 @@ import Quickshell
 import QtQuick.Layouts
 import Quickshell.Io
 import QtQuick
-import qs
+
+import "../services"
 
 Item {
-	Colors { id: theme }
 	id: playerWidget
 	Repeater {
 		model: 8
 		Rectangle {
 			id: playerPetals
-			color: playerStat.text.trim() === "Playing" ? colors.primary : colors.fg
+			color: playerStatus.isPlaying ? Colors.primary : Colors.fg
 			Behavior on color { ColorAnimation { duration: 150 }}
 			Behavior on height { NumberAnimation { duration: 20 }}
 			anchors.centerIn: playerButton
 			width: 25
-			height: 60 + (menuHovered.eqInfo[index] / 6)
+			height: 60 + (CavaService.sixBarsData[index] / 6)
 			radius: width / 2
 			rotation: (index * 45)
 			RotationAnimation on rotation {
@@ -25,14 +25,13 @@ Item {
 				from: rotation
 				to: rotation + 360
 				duration: 20000
-				running: playerStat.text.trim() === "Playing"
-			}
+				running: playerStatus.isPlaying			}
 		}
 	}
 	anchors.fill: parent
 	Rectangle {
 		id: playerButton
-		color: playerStat.text.trim() === "Playing" ? colors.primary : colors.fg
+		color: playerStatus.isPlaying ? Colors.primary : Colors.fg
 		Behavior on color { ColorAnimation { duration: 150 }}
 		anchors {
 			right: parent.right
@@ -53,10 +52,10 @@ Item {
 
 		Text {
 			anchors.centerIn: parent
-			text: playerStat.text.trim() === "Playing" ? "" : (playerStat.text.trim() === "Paused" ? "" : "󰎇")
-			color: playerStat.text.trim() === "Playing" ? colors.bg : (playerStat.text.trim() === "Paused" ? colors.white : colors.white)
+			text: playerStatus.isPlaying ? "" : ( playerStatus.isPaused ? "" : "󰎇")
+			color: playerStatus.isPlaying ? Colors.bg : Colors.white
 			Behavior on color { ColorAnimation { duration: 150 }}
-			font.pixelSize: playerStat.text.trim() === "Playing" ? 30 : (playerStat.text.trim() === "Paused" ? 27 : 28)
+			font.pixelSize: playerStatus.isPlaying ? 30 : ( playerStatus.isPlaying ? 27 : 28)
 		}
 	}
 	Process {
@@ -66,21 +65,17 @@ Item {
 	}
 
 	Process {
+		property bool isPlaying: false
+		property bool isPaused: false
 		id: playerStatus
-		command: ["playerctl", "status"]
-		stdout: StdioCollector { id: playerStat }
-		running: true
-	}
-
-	    Timer {
-		interval: 100
-		repeat: true
-
+		command: ["playerctl", "status", "-F"]
+		stdout: SplitParser {
+			onRead: data => {
+				playerStatus.isPlaying = data === "Playing" ? true : false
+				playerStatus.isPaused = data === "Paused" ? true : false
+				}
+			}
 		running: island.mode === "hovered"
-
-		onTriggered: {
-		    playerStatus.running = false;
-		    playerStatus.running = true;
-		}
 	}
 }
+

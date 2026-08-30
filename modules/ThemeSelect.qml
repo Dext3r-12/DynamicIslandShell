@@ -2,6 +2,8 @@ import Quickshell
 import QtQuick
 import QtQuick.Layouts
 
+import "../services"
+
 Item {
 	anchors.fill: parent
 	opacity: island.mode === "themeSelect" ? 1 : 0
@@ -19,17 +21,17 @@ Item {
 				width: 130
 				height: 70
 				radius: 10
-				color: colors.fg
+				color: Colors.fg
 				TapHandler {
 					enabled: island.mode === "themeSelect"
 					onTapped: {
 						switch (index) {
-							case 0: colors.activeTheme = "catppuccin"; break;
-							case 1: colors.activeTheme = "gruvbox"; break;
-							case 2: colors.activeTheme = "cherryblossom"; break;
-							case 3: colors.activeTheme = "cherryblossom"; break;
-							case 4: colors.activeTheme = "rosepine"; break;
-							case 5: colors.activeTheme = "wallpaper"; break;
+							case 0: Colors.activeTheme = "catppuccin"; break;
+							case 1: Colors.activeTheme = "gruvbox"; break;
+							case 2: Colors.activeTheme = "cherryblossom"; break;
+							case 3: Colors.activeTheme = "cherryblossom"; break;
+							case 4: Colors.activeTheme = "rosepine"; break;
+							case 5: Colors.activeTheme = "wallpaper"; break;
 						}
 					}
 				}
@@ -52,12 +54,12 @@ Item {
 					font.family: "Jetbrains Mono"
 					color: {
 						switch (index) {
-							case 0: return colors.catppuccin[11]; break;
-							case 1: return colors.gruvbox[10]; break;
-							case 2: return colors.cherryblossom[5]; break;
-							case 3: return colors.white; break;
-							case 4: return colors.rosepine[8]; break;
-							case 5: return colors.wallpaperColors[7]; break;
+							case 0: return Colors.catppuccin[11]; break;
+							case 1: return Colors.gruvbox[10]; break;
+							case 2: return Colors.cherryblossom[5]; break;
+							case 3: return Colors.white; break;
+							case 4: return Colors.rosepine[8]; break;
+							case 5: return Colors.wallpaperColors[7]; break;
 						}
 					}
 					RowLayout {
@@ -73,34 +75,34 @@ Item {
 								radius: width / 2
 								color: {
 									if ( themeText.text === "Gruvbox" ) { 
-										if ( index === 0 ) { return colors.gruvbox[0] }
-										if ( index === 1 ) { return colors.gruvbox[5] }
-										if ( index === 2 ) { return colors.gruvbox[8] }
-										if ( index === 3 ) { return colors.gruvbox[10] }
+										if ( index === 0 ) { return Colors.gruvbox[0] }
+										if ( index === 1 ) { return Colors.gruvbox[5] }
+										if ( index === 2 ) { return Colors.gruvbox[8] }
+										if ( index === 3 ) { return Colors.gruvbox[10] }
 									}
 									else if ( themeText.text === "Catppuccin" ) { 
-										if ( index === 0 ) { return colors.catppuccin[2] }
-										if ( index === 1 ) { return colors.catppuccin[5] }
-										if ( index === 2 ) { return colors.catppuccin[8] }
-										if ( index === 3 ) { return colors.catppuccin[10] }
+										if ( index === 0 ) { return Colors.catppuccin[2] }
+										if ( index === 1 ) { return Colors.catppuccin[5] }
+										if ( index === 2 ) { return Colors.catppuccin[8] }
+										if ( index === 3 ) { return Colors.catppuccin[10] }
 									}
 									else if ( themeText.text === "Rose-Pine" ) { 
-										if ( index === 0 ) { return colors.rosepine[0] }
-										if ( index === 1 ) { return colors.rosepine[1] }
-										if ( index === 2 ) { return colors.rosepine[2] }
-										if ( index === 3 ) { return colors.rosepine[4] }
+										if ( index === 0 ) { return Colors.rosepine[0] }
+										if ( index === 1 ) { return Colors.rosepine[1] }
+										if ( index === 2 ) { return Colors.rosepine[2] }
+										if ( index === 3 ) { return Colors.rosepine[4] }
 									}
 									else if ( themeText.text === "Cherry-Blossom" ) { 
-										if ( index === 0 ) { return colors.cherryblossom[0] }
-										if ( index === 1 ) { return colors.cherryblossom[1] }
-										if ( index === 2 ) { return colors.cherryblossom[2] }
-										if ( index === 3 ) { return colors.cherryblossom[4] }
+										if ( index === 0 ) { return Colors.cherryblossom[0] }
+										if ( index === 1 ) { return Colors.cherryblossom[1] }
+										if ( index === 2 ) { return Colors.cherryblossom[2] }
+										if ( index === 3 ) { return Colors.cherryblossom[4] }
 									}
 									else if ( themeText.text === "Auto" ) { 
-										if ( index === 0 ) { return colors.wallpaperColors[0] }
-										if ( index === 1 ) { return colors.wallpaperColors[1] }
-										if ( index === 2 ) { return colors.wallpaperColors[2] }
-										if ( index === 3 ) { return colors.wallpaperColors[4] }
+										if ( index === 0 ) { return Colors.wallpaperColors[0] }
+										if ( index === 1 ) { return Colors.wallpaperColors[1] }
+										if ( index === 2 ) { return Colors.wallpaperColors[2] }
+										if ( index === 3 ) { return Colors.wallpaperColors[4] }
 									}
 									else { return "purple" }
 								}

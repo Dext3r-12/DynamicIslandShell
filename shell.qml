@@ -1,10 +1,15 @@
 import Quickshell
 import Quickshell.Io
 import QtQuick
+import QtQuick.Shapes
 import Quickshell.Services.Pipewire
 import Quickshell.Hyprland
+
 import qs.modules
+import qs.services
+import qs.modules.Settings
 import qs.modules.StressMenu
+
 
 PanelWindow {
 	id: panelWindow
@@ -12,66 +17,58 @@ PanelWindow {
 		top: true
 	}
 	color: "transparent"
-	exclusiveZone: 33
+	exclusiveZone: 38
 	implicitWidth: 760
 	implicitHeight: 430
 
-
-
-
-	// Icons
-	FontLoader {
-		id: iconFont
-		source: "./assets/icons.ttf"
-	}
-	// title
-	FontLoader {
-		id: titleFont
-		source: "./assets/Milker.otf"
-	}
-
-
-
 	// Keybinds
+	function checkMode(mode) { island.mode === mode ? island.mode = "idle" : island.mode = mode }
+	GlobalShortcut {
+		id: battery
+		name: "Battery"
+		onPressed: checkMode("battery")
+	}
 	GlobalShortcut {
 		id: controlPanel
 		name: "ControlPanel"
-		onPressed: {
-			if (island.mode === "controlPanel") { island.mode = "idle" }
-			else { island.mode = "controlPanel" }
+		onPressed: checkMode("controlPanel")
 		}
-	}
 	GlobalShortcut {
 		id: search
 		name: "Search"
-		onPressed: {
-			if (island.mode === "search") { island.mode = "idle" }
-			else { island.mode = "search" }
-		}
+		onPressed: checkMode("search")
 	}
 	GlobalShortcut {
 		id: stress
 		name: "stressMenu"
-		onPressed: {
-			if (island.mode === "stressMenu") { island.mode = "idle" }
-			else { island.mode = "stressMenu" }
-		}
+		onPressed: checkMode("stressMenu")
 	}
-	mask: Region {
-		item: root
-	}
-	Item {
+	Rectangle {
 		id: island
 		property string mode: "idle"
-		anchors.fill: parent
+		anchors.top: parent.top
+		anchors.horizontalCenter: parent.horizontalCenter
+		width: root.implicitWidth
+		height: root.implicitHeight + 5
+		opacity: 0.98
+		color: "transparent"
+		//SplitMode { visible: true }
+		HoverHandler { 
+			id: rootMouse
+			enabled: (island.mode === "idle" || island.mode === "hovered")
+			onHoveredChanged: {
+				if (island.mode !== "idle" && island.mode !== "hovered") return;
+				island.mode = hovered ? "hovered" : "idle"
+			}
+		}
 		Rectangle {
 			id: root
 			anchors { topMargin: 4 }
 			implicitHeight: {
 				switch (island.mode) {
-					case "idle":           return 33; break;
-					case "hovered":        return 85; break;
-					case "powerMenu":      return 70; break;
+					case "idle":           return 33;  break;
+					case "hovered":        return 85;  break;
+					case "powerMenu":      return 70;  break;
 					case "stressMenu":     return 420; break;
 					case "controlPanel":   return 170; break;
 					case "wifi":           return 400; break;
@@ -102,17 +99,16 @@ PanelWindow {
 				}
 			}
 			Behavior on implicitHeight { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
-			Behavior on implicitWidth  { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
+			Behavior on implicitWidth  { NumberAnimation { duration: 500; easing.type: Easing.OutBack } }
 			anchors.horizontalCenter: parent.horizontalCenter
 			anchors.top: parent.top
 
 			radius: 15
-			opacity: 0.98
 
-			color: colors.bg
+			color: Colors.bg
 			Clock {
 				id: clocks
-				color: colors.white
+				color: Colors.white
 				anchors.top: parent.top
 				anchors.topMargin: island.mode === "hovered" ? 0 : 7 
 				anchors.horizontalCenter: parent.horizontalCenter
@@ -122,17 +118,8 @@ PanelWindow {
 					else if (island.mode === "hovered") { return 1 } 
 					else { return 0 } }
 				Behavior on opacity { NumberAnimation { duration: 100} }
-				Behavior on font.pixelSize { NumberAnimation {duration: 250; easing.type: Easing.OutCubic} }
+				Behavior on font.pixelSize { NumberAnimation {duration: 450; easing.type: Easing.OutBack } }
 				Behavior on anchors.topMargin { NumberAnimation {duration: 80} }
-			}
-			HoverHandler { 
-				id: rootMouse
-				enabled: (island.mode === "idle" || island.mode === "hovered")
-				onHoveredChanged: {
-					if (island.mode !== "idle" && island.mode !== "hovered") return;
-
-					island.mode = hovered ? "hovered" : "idle"
-				}
 			}
 
 			Loader {
@@ -157,22 +144,20 @@ PanelWindow {
 
 			Loader {
 			anchors.fill: parent
-			active: island.mode === "player"
-			source: "modules/Player.qml"
-			width: item ? item.implicitWidth : 0
-			height: item ? item.implicitHeight : 0
-			Behavior on opacity { NumberAnimation { duration: 250 }}
-			opacity: island.mode === "player" ? 1 : 0
-			}
-
-			Loader {
-			anchors.fill: parent
 			active: island.mode === "themeSelect"
 			source: "modules/ThemeSelect.qml"
 			width: item ? item.implicitWidth : 0
 			height: item ? item.implicitHeight : 0
 			Behavior on opacity { NumberAnimation { duration: 250 }}
 			opacity: island.mode === "themeSelect" ? 1 : 0
+			}
+			Loader {
+				id: settingsMenuLoader
+				property bool isOpen: false
+				active: isOpen
+				source: "modules/Settings/Settings.qml"
+				width: item ? item.implicitWidth : 0
+				height: item ? item.implicitHeight : 0
 			}
 
 			Loader {
@@ -187,7 +172,6 @@ PanelWindow {
 
 			Hovered {}
 			Search { id: searchRoot }
-			Colors { id: colors }
 		}
 	}
 }

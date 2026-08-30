@@ -4,48 +4,23 @@ import QtQuick
 import QtQuick.Shapes
 import QtQuick3D
 import QtQuick3D.Helpers
-import qs
 
-
+import "../../services"
 
 Item {
 	anchors.fill: parent
 	opacity: island.mode === "stressMenu" ? 1 : 0
 	Behavior on opacity { NumberAnimation { duration: 100 }}
-	Process {
-		id: systemStats
-		property string gpuName: "undefined"
-		property string cpuName: "undefined"
-		property string ramAmount: "undefined"
-		command: ["sh", "-c", "~/.config/quickshell/scripts/systemInfo"]
-		running: true
-		stdout: StdioCollector { 
-			id: systemStat
-				onStreamFinished: {
-					var statistics = systemStat.text.trim().split('|')
-					systemStats.cpuName = statistics[0]
-					systemStats.gpuName = statistics[1]
-					systemStats.ramAmount = statistics[2]
-				}
-			}
-		}
-	Process {
-		id: usageStats
-		running: true
-		property string cpuUsage: "nan"
-		property string gpuUsage: "nan"
-		property string ramUsage: "nan"
-		command: ["sh", "-c", "~/.config/quickshell/scripts/usageInfo"]
-		stdout: StdioCollector { 
-				id: usageStatistics 
-				onStreamFinished: {
-					var usageStat = usageStatistics.text.trim().split('|')
-					usageStats.cpuUsage = usageStat[0].slice(0, -2)
-					usageStats.gpuUsage = usageStat[1].slice(1, -2)
-					usageStats.ramUsage = usageStat[2].slice(1, -1)
-				}
-			}
-		}
+	Binding {
+		target: System
+		property: "systemInfoToggle"
+		value: island.mode === "stressMenu"
+	}
+	Binding {
+		target: System
+		property: "usageToggle"
+		value: island.mode === "stressMenu"
+	}
 	Rectangle {
 	 
 		anchors {
@@ -58,7 +33,7 @@ Item {
 		height: 80
 		width: 260
 		radius: 10
-		color: colors.fg
+		color: Colors.fg
 	}
 	Row {
 		spacing: 30
@@ -69,213 +44,94 @@ Item {
 			topMargin: 50
 			rightMargin: 50
 		}
-		Rectangle {
-			width: 60
-			height: width
-			radius: width / 2
-			color: colors.fg1
-			HoverHandler { id: cpuUsageHover; enabled: island.mode === "stressMenu"}
-			Text {
-				opacity: cpuUsageHover.hovered ? 1 : 0
-				color: "white"
-				text: usageStats.cpuUsage
-				font.pixelSize: 30
-				font.family: "Jetbrains Mono"
-				anchors.centerIn: parent
-				Behavior on opacity { NumberAnimation { duration: 200}}
-			}
-			Text {
-				
-				opacity: cpuUsageHover.hovered ? 0 : 1
-				color: "white"
-				text: ""
-				font.pixelSize: 30
-				anchors.centerIn: parent
-				Behavior on opacity { NumberAnimation { duration: 200}}
-			}
-
-			Shape {
-				anchors.centerIn: parent
-				//layer.enabled: true
-				layer.samples: 6
-				ShapePath {
-					fillColor: "transparent"
-					strokeColor: "white"
-					strokeWidth: 4
-					capStyle: ShapePath.RoundCap
-					PathAngleArc {
-						centerX: 33
-						centerY: 34
-						radiusX: 30
-						radiusY: radiusX
-						startAngle: -90
-						sweepAngle: usageStats.cpuUsage * 3.6
-					}
+		Repeater {
+			model: 3
+			Rectangle {
+				width: 60
+				height: width
+				radius: width / 2
+				color: Colors.fg1
+				HoverHandler { id: cpuUsageHover; enabled: island.mode === "stressMenu"}
+				Text {
+					opacity: cpuUsageHover.hovered ? 1 : 0
+					color: "white"
+					text: {
+						switch (index) {
+							case 0: return System.cpuUsage; break;
+							case 1: return System.gpuUsage; break;
+							case 2: return System.ramUsage; break;
+							}
+						}
+					font.pixelSize: 30
+					font.family: "Jetbrains Mono"
+					anchors.centerIn: parent
+					Behavior on opacity { NumberAnimation { duration: 200}}
 				}
-				ShapePath {
-					fillColor: "transparent"
-					strokeColor: "transparent"
-					strokeWidth: 4
-					capStyle: ShapePath.RoundCap
-					PathAngleArc {
-						centerX: 31
-						centerY: 34
-						radiusX: 30
-						radiusY: radiusX
-						startAngle: -90
-						sweepAngle: 360
+
+				Text {
+					opacity: cpuUsageHover.hovered ? 0 : 1
+					color: Colors.white
+					text: {
+						switch (index) {
+							case 0: return "" ; break;
+							case 1: return "" ; break;
+							case 2: return "" ; break;
+							}
+						}
+					font.pixelSize: index === 1 ? 42 : 30
+					font.family: Fonts.iconFont.name
+					anchors.centerIn: parent
+					Behavior on opacity { NumberAnimation { duration: 200}}
+				}
+
+				Shape {
+					anchors.centerIn: parent
+					layer.samples: 6
+					ShapePath {
+						fillColor: "transparent"
+						strokeColor: Colors.white
+						strokeWidth: 4
+						capStyle: ShapePath.RoundCap
+						PathAngleArc {
+							centerX: 33
+							centerY: 34
+							radiusX: 30
+							radiusY: radiusX
+							startAngle: -90
+							Behavior on sweepAngle {NumberAnimation{ duration: 500; easing.type: Easing.OutCubic}}
+							sweepAngle: {
+								switch (index) {
+									case 0: return System.cpuUsage * 3.6 ; break;
+									case 1: return System.gpuUsage * 3.6; break;
+									case 2: return System.ramUsage * 24; break;
+								}
+							}
+						}
+					}
+					ShapePath {
+						fillColor: "transparent"
+						strokeColor: "transparent"
+						strokeWidth: 4
+						capStyle: ShapePath.RoundCap
+						PathAngleArc {
+							centerX: 31
+							centerY: 34
+							radiusX: 30
+							radiusY: radiusX
+							startAngle: -90
+							sweepAngle: 360
+						}
 					}
 				}
 			}
 		}
 
-		Rectangle {
-			width: 60
-			height: width
-			radius: width / 2
-			color: colors.fg1
-			HoverHandler { id: gpuUsageHover; enabled: island.mode === "stressMenu"}
-			Text {
-				opacity: gpuUsageHover.hovered ? 1 : 0
-				color: "white"
-				text: usageStats.gpuUsage
-				font.pixelSize: 30
-				font.family: "Jetbrains Mono"
-				anchors.centerIn: parent
-				Behavior on opacity { NumberAnimation { duration: 200}}
-			}
-			Text {
-				
-				opacity: gpuUsageHover.hovered ? 0 : 1
-				color: "white"
-				text: "󰢮" 
-				font.pixelSize: 30
-				anchors.centerIn: parent
-				Behavior on opacity { NumberAnimation { duration: 200}}
-			}
-
-			Shape {
-				anchors.centerIn: parent
-				//layer.enabled: true
-				layer.samples: 6
-				ShapePath {
-					fillColor: "transparent"
-					strokeColor: "white"
-					strokeWidth: 4
-					capStyle: ShapePath.RoundCap
-					PathAngleArc {
-						centerX: 31
-						centerY: 31
-						radiusX: 30
-						radiusY: radiusX
-						startAngle: -90
-						sweepAngle: usageStats.gpuUsage * 3.6
-					}
-				}
-				ShapePath {
-					fillColor: "transparent"
-					strokeColor: "transparent"
-					strokeWidth: 4
-					capStyle: ShapePath.RoundCap
-					PathAngleArc {
-						centerX: 31
-						centerY: 31
-						radiusX: 30
-						radiusY: radiusX
-						startAngle: -90
-						sweepAngle: 360
-					}
-				}
-			}
-		}
-		Rectangle {
-			width: 60
-			height: width
-			radius: width / 2
-			color: colors.fg1
-			Text {
-				opacity: ramUsageHover.hovered ? 1 : 0
-				color: "white"
-				text: usageStats.ramUsage
-				font.pixelSize: 24
-				font.family: "Jetbrains Mono"
-				anchors.centerIn: parent
-				Behavior on opacity { NumberAnimation { duration: 200}}
-			}
-			Text {
-				
-				opacity: ramUsageHover.hovered ? 0 : 1
-				color: "white"
-				text: "" 
-				font.pixelSize: 30
-				anchors.centerIn: parent
-				Behavior on opacity { NumberAnimation { duration: 200}}
-			}
-			HoverHandler { id: ramUsageHover; enabled: island.mode === "stressMenu"}
-
-			Shape {
-				anchors.centerIn: parent
-				//layer.enabled: true
-				layer.samples: 6
-				ShapePath {
-					fillColor: "transparent"
-					strokeColor: "white"
-					strokeWidth: 4
-					capStyle: ShapePath.RoundCap
-					PathAngleArc {
-						centerX: 31
-						centerY: 31
-						radiusX: 30
-						radiusY: radiusX
-						startAngle: -90
-						sweepAngle: usageStats.ramUsage * 24
-					}
-				}
-				ShapePath {
-					fillColor: "transparent"
-					strokeColor: "transparent"
-					strokeWidth: 4
-					capStyle: ShapePath.RoundCap
-					PathAngleArc {
-						centerX: 31
-						centerY: 31
-						radiusX: 30
-						radiusY: radiusX
-						startAngle: -90
-						sweepAngle: 360
-					}
-				}
-			}
-		}
 		Timer {
 			running: island.mode === "stressMenu"
 			repeat: true
 			interval: 1500
 			onTriggered: {
-				usageStats.running = false
-				usageStats.running = true
 
-				l1.y = l2.y
-				l2.y = l3.y
-				l3.y = l4.y
-				l4.y = l5.y
-				l5.y = l6.y
-				l6.y = l7.y
-				l7.y = l8.y
-				l8.y = l9.y
-				l9.y = l10.y
-
-				
-				g1.y = g2.y
-				g2.y = g3.y
-				g3.y = g4.y
-				g4.y = g5.y
-				g5.y = g6.y
-				g6.y = g7.y
-				g7.y = g8.y
-				g8.y = g9.y
-				g9.y = g10.y
-				
 			}
 		}
 	}
@@ -292,7 +148,7 @@ Item {
 			width: 260
 			height: 120
 			radius: 10
-			color: colors.fg
+			color: Colors.fg
 			Text {
 				text: "CPU"
 				anchors {
@@ -300,7 +156,7 @@ Item {
 					top: parent.top
 					topMargin: 5
 				}
-				color: colors.white
+				color: Colors.white
 				font.pixelSize: 44
 				font.family: "Jetbrains Mono"
 				Text {
@@ -310,7 +166,7 @@ Item {
 						topMargin: 45
 					}
 					text: "Usage"
-					color: colors.white
+					color: Colors.white
 					font.pixelSize: 24
 					font.family: "Jetbrains Mono"
 				}
@@ -319,21 +175,25 @@ Item {
 				anchors.fill: parent
 				anchors.bottom: parent.bottom
 				ShapePath {
+					id: cpuGraph
 					capStyle: ShapePath.RoundCap
-					startX: 10 
-					startY: l1.y
+					startX: 10
+					startY: System.cpuUsageGraphData[0] * -1 + 120
+					strokeColor: Colors.white
 					strokeWidth: 3
 					fillColor: "transparent"
-					PathLine { x: 10; y: 120; id: l1 }
-					PathLine { x: 30; y: 120; id: l2 }
-					PathLine { x: 60; y: 120; id: l3  }
-					PathLine { x: 90; y: 120; id: l4  }
-					PathLine { x: 120; y: 120; id: l5  }
-					PathLine { x: 150; y: 120; id: l6  }
-					PathLine { x: 180; y: 120; id: l7  }
-					PathLine { x: 210; y: 120; id: l8  }
-					PathLine { x: 240; y: 120; id: l9  }
-					PathLine { x: 250; y: usageStats.cpuUsage * -1 + 120; id: l10 }
+					PathSvg {
+						path: {
+							let dots = []
+							for ( let i = 1; i < 20; i++) {
+								let x = 250 - (250 - ((250 / 19) * i))
+								let y = System.cpuUsageGraphData[i] * -1 + 120
+								
+								dots += " L " + x + " " + y + " "
+							}
+							return dots
+						}
+					}
 				}
 			}
 		}
@@ -350,7 +210,7 @@ Item {
 			width: 260
 			height: 120
 			radius: 10
-			color: colors.fg
+			color: Colors.fg
 			Text {
 				text: "GPU"
 				anchors {
@@ -358,7 +218,7 @@ Item {
 					top: parent.top
 					topMargin: 5
 				}
-				color: colors.white
+				color: Colors.white
 				font.pixelSize: 44
 				font.family: "Jetbrains Mono"
 				Text {
@@ -368,7 +228,7 @@ Item {
 						topMargin: 45
 					}
 					text: "Usage"
-					color: colors.white
+					color: Colors.white
 					font.pixelSize: 24
 					font.family: "Jetbrains Mono"
 				}
@@ -377,43 +237,26 @@ Item {
 				anchors.fill: parent
 				anchors.bottom: parent.bottom
 				ShapePath {
-					id: gpuUsageShape
-					property var data: []
+					id: gpuGraph
+					property var data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					capStyle: ShapePath.RoundCap
 					startX: 10
-					startY: g1.y
+					startY: System.gpuUsageGraphData[0] * -1 + 120
 					strokeWidth: 3
+					strokeColor: Colors.white
 					fillColor: "transparent"
-					/*
 					PathSvg {
 						path: {
-							let output = ""; 
-							let data = [usageStats.gpuUsage, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-							for (let i = 1; i <= 10; i++) {
-								let nextX = 250 - (12 * (i * 2));
-								let nextY = data[i - 1] * -1 + 120;
-
-								let prevY = data[i - 1]
-
-								output += " L " + nextX + " " + nextY;
-								data[i] = nextY;
+							let dots = []
+							for ( let i = 1; i < 20; i++) {
+								let x = 250 - (250 - ((250 / 19) * i))
+								let y = System.gpuUsageGraphData[i] * -1 + 120
+								
+								dots += " L " + x + " " + y + " "
 							}
-							console.log(output);
-							return output;
+							return dots
 						}
 					}
-					*/
-					
-					PathLine { x: 10; y: 120; id: g1 }
-					PathLine { x: 30; y: 120; id: g2 }
-					PathLine { x: 60; y: 120; id: g3  }
-					PathLine { x: 90; y: 120; id: g4  }
-					PathLine { x: 120; y: 120; id: g5  }
-					PathLine { x: 150; y: 120; id: g6  }
-					PathLine { x: 180; y: 120; id: g7  }
-					PathLine { x: 210; y: 120; id: g8  }
-					PathLine { x: 240; y: 120; id: g9  }
-					PathLine { x: 250; y: usageStats.gpuUsage * -1 + 120; id: g10 }
 				}
 			}
 		}
@@ -492,7 +335,7 @@ Item {
 					startX: 135
 					startY: 130
 					fillColor: "transparent"
-					strokeColor: cpuHover.hovered ? colors.primary : "transparent"
+					strokeColor: cpuHover.hovered ? Colors.primary : "transparent"
 					Behavior on strokeColor { ColorAnimation { duration: 200}}
 					strokeWidth: 4
 					capStyle: ShapePath.RoundCap
@@ -519,14 +362,14 @@ Item {
 					x: cpuHover.hovered ? 300 : 400
 					y: 157
 					radius: 7
-					color: colors.fg
+					color: Colors.fg
 					border.width: 5
-					border.color: colors.primary
+					border.color: Colors.primary
 					Behavior on opacity { NumberAnimation { duration: 200}}
 					Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
 					Text {
 						anchors.centerIn: parent
-						text: systemStats.cpuName
+						text: System.cpuName
 						color: "white"
 						font.pixelSize: 15
 						font.family: "Jetbrains Mono"
@@ -552,7 +395,7 @@ Item {
 				startX: 200
 				startY: 130
 				fillColor: "transparent"
-				strokeColor: ramHover.hovered ? colors.primary : "transparent"
+				strokeColor: ramHover.hovered ? Colors.primary : "transparent"
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				Behavior on strokeColor { ColorAnimation { duration: 200}}
@@ -573,15 +416,15 @@ Item {
 				height: 40
 				x: ramHover.hovered ? 300 : 400
 				y: 57
-				color: colors.fg
+				color: Colors.fg
 				border.width: 5
-				border.color: colors.primary
+				border.color: Colors.primary
 				radius: 7
 				Behavior on opacity { NumberAnimation { duration: 200}}
 				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
 				Text {
 					anchors.centerIn: parent
-					text: systemStats.ramAmount
+					text: System.ramAmount
 					color: "white"
 					font.pixelSize: 15
 					font.family: "Jetbrains Mono"
@@ -607,7 +450,7 @@ Item {
 				startX: 157
 				startY: 209
 				fillColor: "transparent"
-				strokeColor: gpuHover.hovered ? colors.primary : "transparent"
+				strokeColor: gpuHover.hovered ? Colors.primary : "transparent"
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				Behavior on strokeColor { ColorAnimation { duration: 500; easing.type: Easing.OutCubic}}
@@ -629,14 +472,14 @@ Item {
 				x: gpuHover.hovered ? 300 : 400
 				y: 257
 				radius: 7
-				color: colors.fg
+				color: Colors.fg
 				border.width: 5
-				border.color: colors.primary
+				border.color: Colors.primary
 				Behavior on opacity { NumberAnimation { duration: 200}}
 				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
 				Text {
 					anchors.centerIn: parent
-					text: systemStats.gpuName
+					text: System.gpuName
 					color: "white"
 					font.pixelSize: 15
 					font.family: "Jetbrains Mono"
@@ -662,7 +505,7 @@ Item {
 				startX: 290
 				startY: 300
 				fillColor: "transparent"
-				strokeColor: diskHover.hovered ? colors.primary : "transparent"
+				strokeColor: diskHover.hovered ? Colors.primary : "transparent"
 				strokeWidth: 4
 				capStyle: ShapePath.RoundCap
 				Behavior on strokeColor { ColorAnimation { duration: 500; easing.type: Easing.OutCubic}}
@@ -684,9 +527,9 @@ Item {
 				x: diskHover.hovered ? 300 : 400
 				y: 7
 				radius: 7
-				color: colors.fg
+				color: Colors.fg
 				border.width: 5
-				border.color: colors.primary
+				border.color: Colors.primary
 				Behavior on opacity { NumberAnimation { duration: 200}}
 				Behavior on x { NumberAnimation { duration: 500; easing.type: Easing.OutCubic}}
 				//Disks {}

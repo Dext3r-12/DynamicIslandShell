@@ -1,0 +1,6 @@
+singleton Battery 1.0 BatteryManage.qml
+singleton CavaService 1.0 Cava.qml
+singleton Fonts 1.0 FontLoader.qml
+singleton System 1.0 System.qml
+singleton Preset 1.0 Preset.qml
+singleton Colors 1.0 Colors.qml

@@ -1,11 +1,11 @@
 import Quickshell
 import Quickshell.Io
 import QtQuick
-import qs.modules
 
+pragma Singleton
 
-Item {
-	id: themes
+Singleton {
+	id: colors
 	property color bg: {
 		if (activeTheme === "catppuccin"   ) { return catppuccin[2] }
 		if (activeTheme === "gruvbox"      ) { return gruvbox[0] }
@@ -16,7 +16,7 @@ Item {
 	} 
 
 	property color fg:  {
-		if (activeTheme === "catppuccin"   ) { return catppuccin[3] }
+		if (activeTheme === "catppuccin"   ) { return Qt.lighter(catppuccin[3], 0.8) }
 		if (activeTheme === "gruvbox"      ) { return gruvbox[1] }
 		if (activeTheme === "rosepine"     ) { return rosepine[1] }
 		if (activeTheme === "cherryblossom") { return cherryblossom[1] }
@@ -78,7 +78,7 @@ Item {
 		else { return "purple"}
 	} 
 
-	property string activeTheme: "cherryblossom"
+	property string activeTheme: "catppuccin"
 
 	property var wallpaperColors: [
 	"#28242a", // Base
@@ -167,7 +167,6 @@ Item {
 			onStreamFinished: {
 				var lines = colorSource.text.trim().split('\n')
 				wallpaperColors = lines
-				console.log(wallpaperColors)
 			}
 		}
 	}

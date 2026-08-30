@@ -5,53 +5,15 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Hyprland
 import QtQuick.Shapes
-import qs
+
+import "../services"
 
 Item {
 	id: menuHovered
 	anchors.fill: parent
 	opacity: island.mode === "hovered"
-	enabled: island.mode === "hovered"
 	Behavior on opacity { NumberAnimation { duration: 100 } }
 
-	Text {
-		opacity: batteryPercent.text === "computer" ? 1 : 0
-		text: batteryPercent.text
-		font.pixelSize: 24
-		font.family: "Jetbrains Mono"
-		color: "white"
-		verticalAlignment: Text.AlignVCenter
-		anchors {
-			right: parent.right
-			rightMargin: 120
-			top: parent.top
-			topMargin: 10
-		}
-		Text {
-			text: {
-				if (batteryPercent.text.slice(0, 2) >= 80) { return "" } 
-				else if (batteryPercent.text.slice(0, 2) >= 60) { return "" } 
-				else if (batteryPercent.text.slice(0, 2) >= 40) { return "" } 
-				else if (batteryPercent.text.slice(0, 2) >= 20) { return "" } 
-				else if (batteryPercent.text.slice(0, 2) >= 5) { return "" }
-				else { return "" }
-			}
-			font.pixelSize: 48
-			font.family: "Jetbrains Mono"
-			color: "white"
-			x: 30
-			y: 5
-			anchors {
-				centerIn: parent
-				horizontalCenterOffset: 30
-			}
-		}
-	}
-	Process {
-		running: island.mode === "hovered"
-		command: ["sh", "-c", "~/.config/quickshell/scripts/battery"]
-		stdout: StdioCollector { id: batteryPercent }
-	}
 
 	// Workspaces
 	RowLayout {
@@ -71,12 +33,12 @@ Item {
 				width: 30
 				height: 30
 				radius: 6
-				color: colors.fg
+				color: Colors.fg
 				Behavior on color { ColorAnimation { duration: 100 } }
 				Text {
 					anchors.centerIn: parent
 					text: index + 1
-					color: colors.primary
+					color: Colors.primary
 					font.pixelSize: 18
 					font.family: "Jetbrains Mono"
 				}	
@@ -97,19 +59,18 @@ Item {
 		radius: 6
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: 5
-		color: colors.primary
+		color: Colors.primary
 		x: {
 			if (Hyprland.focusedWorkspace?.id >= 5) {
 				return 105 + 35 * 5
 			}
 			return 105 + 35 * Hyprland.focusedWorkspace?.id
-		
 		}
 		Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutCubic}}
 		Text {
 			anchors.centerIn: parent
 			text: Hyprland.focusedWorkspace.id
-			color: colors.bg
+			color: Colors.bg
 			Behavior on color { ColorAnimation { duration: 100 } }
 			font.pixelSize: 18
 			font.family: "Jetbrains Mono"
@@ -127,9 +88,9 @@ Item {
 		Repeater {
 			model: 3
 			Rectangle {
-				color: colors.fg
+				color: Colors.fg
 				width: 10
-				height: (menuHovered.eqInfo[index + 3] / 2.5) + 10
+				height: (CavaService.sixBarsData[index + 3] / 2.5) + 10
 				radius: width / 2
 				Behavior on height { NumberAnimation { duration: 20 }}
 			}
@@ -144,25 +105,21 @@ Item {
 		Repeater {
 			model: 3
 			Rectangle {
-				color: colors.fg
+				color: Colors.fg
 				width: 10
-				height: (menuHovered.eqInfo[index] / 2.5) + 10
+				height: (CavaService.sixBarsData[index] / 2.5) + 10
 				radius: width / 2
 				Behavior on height { NumberAnimation { duration: 20 }}
 			}
 		}
 	}
-	property var eqInfo: ["0", "0", "0", "0", "0", "0"]
-	Process {
-		id: eqGet
-		running: island.mode === "hovered" 
-		command: ["sh", "-c", "~/.config/quickshell/scripts/equalizer.sh "]
-		stdout: SplitParser {
-			onRead: data => {
-				eqInfo = data.split("#")
-			}
-		}
+
+	Binding {
+		target: CavaService
+		property: "isCavaSixBarsRunning"
+		value: island.mode === "hovered"
 	}
+
 
 	// Other
 	Volume {}
