@@ -44,11 +44,11 @@ Item {
 				TapHandler { 
 					enabled: island.mode === "hovered"
 					onTapped: {
-					let wnum = index + 1
-					Hyprland.dispatch(`hl.dsp.focus({ workspace = "${wnum}" })`)
-				}}
-
-
+					Niri.targetWorkspace = index + 1
+					Niri.changeWorkspace = false
+					Niri.changeWorkspace = true
+					}
+				}
 			}
 		}
 	}

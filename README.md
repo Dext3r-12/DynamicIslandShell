@@ -1,6 +1,7 @@
 
 # DynamicIslandShell
 Dynamic island top bar made with Quickshell
+works on Niri, if you wanna use it on other wm, make fork or idk
 
 <div style="display: flex; justify-content: center;">
   <img src="./assets/preview.gif" />
