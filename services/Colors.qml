@@ -25,7 +25,7 @@ Singleton {
 	} 
 
 	property color fg1:  {
-		if (activeTheme === "catppuccin"   ) { return catppuccin[4] }
+		if (activeTheme === "catppuccin"   ) { return Qt.lighter(catppuccin[4], 0.75) }
 		if (activeTheme === "gruvbox"      ) { return gruvbox[2] }
 		if (activeTheme === "rosepine"     ) { return rosepine[2] }
 		if (activeTheme === "cherryblossom") { return cherryblossom[2] }
@@ -78,7 +78,7 @@ Singleton {
 		else { return "purple"}
 	} 
 
-	property string activeTheme: "catppuccin"
+	property string activeTheme: "catppuccin" // @
 
 	property var wallpaperColors: [
 	"#28242a", // Base

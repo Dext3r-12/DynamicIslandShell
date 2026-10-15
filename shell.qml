@@ -1,12 +1,13 @@
 import Quickshell
+import Quickshell.Wayland
 import Quickshell.Io
 import QtQuick
 import QtQuick.Shapes
 import Quickshell.Services.Pipewire
-import Quickshell.Hyprland
 
 import qs.modules
 import qs.services
+import qs.desktopWidgets
 import qs.modules.Settings
 import qs.modules.StressMenu
 
@@ -18,30 +19,22 @@ PanelWindow {
 	}
 	color: "transparent"
 	exclusiveZone: 38
-	implicitWidth: 760
-	implicitHeight: 430
+	implicitWidth: 1920
+	implicitHeight: 1080
+	WlrLayershell.keyboardFocus: island.mode === "search" ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
-	// Keybinds
-	function checkMode(mode) { island.mode === mode ? island.mode = "idle" : island.mode = mode }
-	GlobalShortcut {
-		id: battery
-		name: "Battery"
-		onPressed: checkMode("battery")
-	}
-	GlobalShortcut {
-		id: controlPanel
-		name: "ControlPanel"
-		onPressed: checkMode("controlPanel")
+
+	// Island mode change logic
+	IpcHandler {
+		target: "Mode"
+		property string mode: island.mode
+		function setMode(mode: string): void {
+			if (island.mode === mode) {
+				island.mode = "idle"
+			} else {
+				island.mode = mode
+			}
 		}
-	GlobalShortcut {
-		id: search
-		name: "Search"
-		onPressed: checkMode("search")
-	}
-	GlobalShortcut {
-		id: stress
-		name: "stressMenu"
-		onPressed: checkMode("stressMenu")
 	}
 	mask: Region {
 		item: island
@@ -51,11 +44,11 @@ PanelWindow {
 		property string mode: "idle"
 		anchors.top: parent.top
 		anchors.horizontalCenter: parent.horizontalCenter
-		width: root.implicitWidth
-		height: root.implicitHeight + 5
+		implicitWidth: root.implicitWidth
+		implicitHeight: root.implicitHeight + 5
 		opacity: 0.98
 		color: "transparent"
-		//SplitMode { visible: true }
+		SplitMode { visible: Configuration.splitMode }
 		HoverHandler { 
 			id: rootMouse
 			enabled: (island.mode === "idle" || island.mode === "hovered")
@@ -175,6 +168,7 @@ PanelWindow {
 
 			Hovered {}
 			Search { id: searchRoot }
+			DesktopWidgets {}
 		}
 	}
 }

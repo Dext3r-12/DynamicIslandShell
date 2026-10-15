@@ -34,7 +34,7 @@ Item {
 					color: controlPanelHoverButtons.hovered ? Colors.primary : Colors.fg
 					Text {
 						anchors.centerIn: parent
-						text: index === 0 ? "" : ""
+						text: index === 0 ? "" : ""
 						color: controlPanelHoverButtons.hovered ? Colors.bg : Colors.white
 						font.pixelSize: index === 0 ? 32 : 36
 						font.family: Fonts.iconFont.name
@@ -67,7 +67,7 @@ Item {
 							switch (index) {
 								case 0: return ""; break;
 								case 1: return ""; break;
-								case 2: return ""; break;
+								case 2: return ""; break;
 							}
 						}
 						anchors.centerIn: parent
@@ -126,9 +126,9 @@ Item {
 						switch (index) {
 							case 0: return ""; break;
 							case 1: return ""; break;
-							case 2: return ""; break;
-							case 3: return ""; break;
-							case 4: return ""; break;
+							case 2: return ""; break;
+							case 3: return ""; break;
+							case 4: return ""; break;
 						}
 					}
 					font.pixelSize: {

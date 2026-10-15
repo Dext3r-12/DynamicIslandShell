@@ -1,5 +1,5 @@
 [general]
-bars = 6
+bars = 10
 framerate = 60
 
 [smoothing]

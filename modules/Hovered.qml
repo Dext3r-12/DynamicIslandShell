@@ -3,7 +3,6 @@ import Quickshell.Io
 import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Hyprland
 import QtQuick.Shapes
 
 import "../services"
@@ -29,7 +28,7 @@ Item {
 			Rectangle {
 				id: workspace
 				property bool whover: false
-				property bool isActive: Hyprland.focusedWorkspace?.id === (index + 1)
+				property bool isActive: Niri.workspaceIndex?.id === (index + 1)
 				width: 30
 				height: 30
 				radius: 6
@@ -61,15 +60,15 @@ Item {
 		anchors.bottomMargin: 5
 		color: Colors.primary
 		x: {
-			if (Hyprland.focusedWorkspace?.id >= 5) {
+			if (Niri.workspaceIndex >= 5) {
 				return 105 + 35 * 5
 			}
-			return 105 + 35 * Hyprland.focusedWorkspace?.id
+			return 105 + 35 * Niri.workspaceIndex
 		}
 		Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutCubic}}
 		Text {
 			anchors.centerIn: parent
-			text: Hyprland.focusedWorkspace.id
+			text: Niri.workspaceIndex
 			color: Colors.bg
 			Behavior on color { ColorAnimation { duration: 100 } }
 			font.pixelSize: 18
@@ -90,7 +89,7 @@ Item {
 			Rectangle {
 				color: Colors.fg
 				width: 10
-				height: (CavaService.sixBarsData[index + 3] / 2.5) + 10
+				height: (CavaService.barsData[index + 3] / 2.5) + 10
 				radius: width / 2
 				Behavior on height { NumberAnimation { duration: 20 }}
 			}
@@ -107,18 +106,18 @@ Item {
 			Rectangle {
 				color: Colors.fg
 				width: 10
-				height: (CavaService.sixBarsData[index] / 2.5) + 10
+				height: (CavaService.barsData[index] / 2.5) + 10
 				radius: width / 2
 				Behavior on height { NumberAnimation { duration: 20 }}
 			}
 		}
 	}
-
+/*
 	Binding {
 		target: CavaService
 		property: "isCavaSixBarsRunning"
 		value: island.mode === "hovered"
-	}
+	}*/
 
 
 	// Other

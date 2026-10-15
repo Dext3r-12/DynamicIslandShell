@@ -111,7 +111,7 @@ Item {
 		anchors {
 		    centerIn: volBG
 		}
-		text: ""
+		text: ""
 		opacity: volHover.hovered ? 0 : 1
 		Behavior on opacity { NumberAnimation { duration: 150}}
 	    }

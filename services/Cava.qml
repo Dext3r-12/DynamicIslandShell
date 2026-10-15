@@ -6,15 +6,15 @@ pragma Singleton
 
 Item {
 	id: root
-	property bool isCavaSixBarsRunning: false
-	property var sixBarsData: ["0", "0", "0", "0", "0", "0"]
+	property bool isCavaSixBarsRunning: true
+	property var barsData: ["0", "0", "0", "0", "0", "0"]
 	Process {
 		id: sixBarsProcess
 		running: root.isCavaSixBarsRunning
-		command: ["sh", "-c", "~/.config/quickshell/services/cava/six.sh "]
+		command: ["sh", "-c", "~/.config/quickshell/services/cava/cava_config.sh "]
 		stdout: SplitParser {
 			onRead: data => {
-				root.sixBarsData = data.split("#")
+				root.barsData = data.split("#")
 			}
 		}
 	}

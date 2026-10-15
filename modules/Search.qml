@@ -1,7 +1,6 @@
 import Quickshell
 import Quickshell.Widgets
 import Quickshell.Io
-import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -65,13 +64,6 @@ Item {
 				island.mode = "idle"
 			}
 		}
-		Timer {
-			id: focusTimer
-			interval: 200
-			onTriggered: {
-				if (!panelWindow.active) { island.mode = "idle" }
-			}
-		}
 		onActiveFocusChanged: {
 			if (!activeFocus) { 
 				island.mode = "idle"
@@ -85,10 +77,6 @@ Item {
 			checkApps.running = false
 			checkApps.running = true
 		}
-	}
-	HyprlandFocusGrab {
-		windows: [ panelWindow ]
-		active: island.mode === "search"
 	}
 	Process {
 		id: launchApp

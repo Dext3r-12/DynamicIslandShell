@@ -74,7 +74,7 @@ Item {
 					text: {
 						switch (index) {
 							case 0: return "" ; break;
-							case 1: return "" ; break;
+							case 1: return "" ; break;
 							case 2: return "" ; break;
 							}
 						}

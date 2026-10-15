@@ -5,9 +5,8 @@ Item {
 	anchors.fill: parent
 	Rectangle {
 		id: upperConnection
-		anchors.horizontalCenter: parent.horizontalCenter
 		height: 23
-		width: root.implicitWidth
+		width: island.implicitWidth
 		color: Colors.bg
 	}
 	Shape {
@@ -19,13 +18,12 @@ Item {
 			strokeColor: Colors.bg
 			strokeWidth: 10
 			PathAngleArc {
-				centerX: 391 + (root.implicitWidth / 2)
+				centerX: 11 + island.implicitWidth
 				centerY: 11
 				radiusX: 17
 				radiusY: 17
-				startAngle: -180
+				startAngle: 180
 				sweepAngle: 90
-				Behavior on sweepAngle { NumberAnimation { duration: 150; easing.type: Easing.OutCubic }}
 			}
 		}
 	}
@@ -33,18 +31,18 @@ Item {
 		anchors.top: parent.top
 		layer.enabled: true
 		layer.samples: 6
+		x: -23
 		ShapePath {
 			fillColor: "transparent"
 			strokeColor: Colors.bg
 			strokeWidth: 10
 			PathAngleArc {
-				centerX: 367 - (root.implicitWidth / 2)
+				centerX: 10
 				centerY: 11
 				radiusX: 17
 				radiusY: 17
 				startAngle: -90
 				sweepAngle: 90
-				Behavior on sweepAngle { NumberAnimation { duration: 150; easing.type: Easing.OutCubic }}
 			}
 		}
 	}
