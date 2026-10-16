@@ -44,7 +44,10 @@ Item {
 		radius: 25
 		TapHandler { 
 			enabled: island.mode === "hovered"
-			onTapped: Player.playToggle = !Player.playToggle
+			onTapped: {
+				Player.playToggle = false
+				Player.playToggle = true
+			}
 		}
 
 		Text {
